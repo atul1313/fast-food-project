@@ -1,0 +1,21 @@
+:where(.css-dev-only-do-not-override-1rqnfsa).ant-modal .ant-modal-content{
+    padding: 24px 10px;
+}
+/* Enable text selection for all elements */
+* {
+    -webkit-user-select: auto; 
+    -moz-user-select: auto; 
+    -ms-user-select: auto; 
+    user-select: auto; 
+}
+/* Set the color of selected text */
+::selection {
+    background-color: #c1b1e0!important;
+    color: #000;
+}
+
+/* For Firefox */
+::-moz-selection {
+    background-color: #c1b1e0!important; 
+    color: #000; 
+}

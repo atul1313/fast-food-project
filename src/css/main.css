@@ -1,0 +1,102 @@
+body {
+	font-family: "Poppins", sans-serif;
+}
+
+a {
+	color: #000;
+	text-decoration: none;
+	display: block;
+}
+
+a:hover {
+	color: #5e35b1;
+}
+
+input:focus-visible {
+	outline: none;
+}
+
+ul,
+p {
+	padding: 0;
+	margin: 0;
+}
+
+li {
+	list-style: none;
+}
+
+img {
+	width: 100%;
+}
+
+.main-outer {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	position: relative;
+}
+
+
+/* MODAL CSS */
+
+:where(.css-dev-only-do-not-override-gzal6t).ant-steps .ant-steps-item-process .ant-steps-item-icon {
+	background-color: #4e35b1 !important;
+	border-color: #4e35b1 !important;
+}
+
+:where(.css-dev-only-do-not-override-gzal6t).ant-steps .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
+	color: #4e35b1 !important;
+}
+
+.ant-modal-footer {
+	display: none;
+}
+
+.ant-modal-close {
+	display: none;
+}
+
+.ant-space-item {
+	width: 100%;
+}
+
+.user-detail .ant-modal-content {
+	/* height: 700px; */
+	overflow: scroll;
+}
+
+:where(.css-dev-only-do-not-override-1rqnfsa).ant-steps.ant-steps-vertical {
+	flex-direction: row;
+	flex-wrap: wrap;
+	display: flex;
+}
+
+@media (max-width:479px) {
+	:where(.css-dev-only-do-not-override-gzal6t).ant-modal .ant-modal-content {
+		padding: 20px 15px 10px 15px;
+	}
+}
+
+
+
+.MuiAutocomplete-endAdornment.css-1q60rmi-MuiAutocomplete-endAdornment {
+	display: none !important;
+}
+
+
+/* custom scrollbar */
+
+.custom-scrollbar::-webkit-scrollbar {
+	width: 4px;
+}
+
+/* Track */
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: #e5e5e5;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background: #4e35b1;
+}

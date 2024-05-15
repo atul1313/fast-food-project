@@ -1,0 +1,137 @@
+.bill-outer {
+    padding: 10px 15px 55px 10px;
+    width: 23%;
+    border-right: 2px solid #4e35b1;
+    position: fixed;
+    top: 60px;
+    display: block;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 7px 8px -4px, rgba(0, 0, 0, 0.14) 0px 12px 17px 2px, rgba(0, 0, 0, 0.12) 0px 5px 22px 4px;
+    right: 0;
+}
+
+.bill-inner {
+	display: flex;
+	justify-content: space-between;
+	align-items: last baseline;
+	margin-bottom: 20px;
+	align-items: center;
+}
+.order-type-inner{
+    display: flex;
+    justify-content: space-between;
+}
+.bill-inner .order-type,
+.bill-inner .title {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+.bill-inner .bill-item-inner{
+    width: 65%;
+}
+.ordertype-select {
+    font-size: 14px;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+
+.table .header-name,
+.subtotal {
+    display: flex;
+    align-items: center;
+}
+.subtotal div{
+    width: 50%;
+}
+.table .products {
+    border-bottom: 1px solid #cdcdcd;
+    display: flex;
+    align-items: center;
+}
+
+.table .header-name {
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.table .header-name .pname,
+.qty,
+.total {
+    font-weight: 700;
+    color: #4e35b1;
+
+}
+
+.table .table-body {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.delete-btn-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    border: none;
+}
+
+button:disabled{
+    cursor: not-allowed;
+}
+
+.delete-btn-btn:hover {
+    background-color: #ede7f6;
+}
+
+.payment button {
+	width: auto;
+	margin: 0 13px;
+	font-size: 15px;
+	background: #4e35b1;
+	color: #fff;
+	border-radius: 6px;
+    border: none;
+	padding: 10px;
+}
+
+button{
+    border: none;
+}
+.table .subtotal {
+    font-size: 14px;
+    font-weight: 700;
+    color: #4e35b1;
+}
+
+.order {
+	width: 100%;
+	margin-top: 30px;
+	padding: 10px;
+	border-radius: 6px;
+	color: #fff;
+	background: #4e35b1;
+	max-width: 120px;
+	margin: 10px auto 0;
+	display: block;
+}
+
+.select_type {
+    width: 100%;
+    height: 50px;
+    padding: 0 10px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media(max-width:1200px) {
+    .bill-outer {
+        display: none;
+    }
+}
+.total-bill .bill{
+    width: 30%;
+}

@@ -1,0 +1,233 @@
+.icon {
+    color: #8e8e8e;
+}
+
+.main-outer .admin-outer {
+    width: 100%;
+    margin-left: 15%;
+    padding: 15px 25px;
+    height: 100%;
+}
+
+.main-outer .admin-outer .product-navbar {
+    display: flex;
+    align-items: center;
+}
+
+.main-outer .admin-outer .product-navbar .Product_btn {
+    margin: 0 10px;
+    padding: 6px;
+    width: 120px;
+    border-radius: 6px;
+    font-size: 16px;
+    border: 1px solid #5559ce;
+    background: #fff;
+    color: #5559ce;
+}
+
+.Product_btn.active_btn {
+    background-color: red;
+}
+
+.main-outer .admin-outer .department .department-outer {
+    display: flex;
+    align-items: center;
+}
+
+.main-outer .admin-outer .department .department-outer .item {
+    margin: 0 7px;
+}
+
+.save,
+.clear {
+    width: 80px;
+    border-radius: 6px;
+    line-height: 8px;
+    margin: 0 8px;
+    padding: 14px;
+}
+
+.save {
+    color: #fff;
+    background-color: #5559ce;
+}
+
+.clear {
+    color: #5559ce;
+    background-color: #fff;
+    border: 1px solid #5559ce;
+}
+
+.main-outer .admin-outer .department .department-outer .clear:hover {
+    color: #fff;
+    background-color: #5559ce;
+}
+
+
+.department .data-table-outer {
+    margin: 20px 0;
+}
+
+.search-outer {
+    margin-bottom: 35px;
+}
+.itemDetail-outer{
+    margin-bottom: 40px;
+}
+
+
+.pagination-btn button {
+    width: 60px;
+    border: 1px solid #046cf5;
+    color: #046cf5;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.selection {
+    width: 70px;
+    padding: 5px 10px;
+    background: #fff;
+    border: 1px solid #046cf5;
+    border-radius: 6px;
+    color: #046cf5;
+    margin: 0 10px;
+}
+
+.search-outer .search {
+    width: 250px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #000;
+}
+
+@media(max-width:991px) {
+
+    .pagination-btn .prev,
+    .pagination-btn .next {
+        width: fit-content;
+    }
+
+    .pagination-btn button {
+        width: 40px;
+        height: 40px;
+        line-height: 15px;
+    }
+}
+
+@media(max-width:767px) {
+    .main-outer .admin-outer .department .department-outer {
+        display: block;
+    }
+
+    .main-outer .admin-outer .department .department-outer .item {
+        margin-bottom: 10px;
+    }
+}
+
+
+@media(max-width:639px) {
+    .main-outer .admin-outer {
+        padding: 10px;
+    }
+
+    .main-outer .admin-outer .btn-outer button {
+        width: fit-content;
+        padding: 5px;
+        margin: 0 5px;
+        font-size: 17px;
+    }
+}
+
+@media(max-width:479px) {
+    .pagination-main {
+        padding: 0 !important;
+    }
+
+    .pagination-main span {
+        font-size: 14px;
+    }
+
+    .search-outer .search {
+        width: 200px;
+    }
+
+    .main-outer .admin-outer .btn-outer button {
+        font-size: 16px;
+    }
+}
+
+
+
+/* ITEM DETAIL */
+.itemDetail-outer .item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.itemDetail-outer .item .item-name {
+    width: 35%;
+    padding: 0;
+}
+
+.itemDetail-outer .item div {
+    width: 65%;
+}
+
+.itemDetail-outer .item div select,
+.itemDetail-outer .item div input,
+.itemDetail-outer .item div textarea {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #000;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.itemDetail-outer .item .file {
+    width: 60%;
+}
+
+.itemDetail-outer .item .img {
+    width: 40%;
+}
+
+.itemDetail-outer .item .file input {
+    border: none;
+}
+
+.itemDetail-outer .item .save {
+    width: 110px;
+    padding: 10px;
+    background: #046cf5;
+    color: #fff;
+    border-radius: 6px;
+    margin: 0 10px;
+}
+
+.itemDetail-outer .item .clear {
+    width: 110px;
+    padding: 10px;
+    background: #fff;
+    color: #046cf5;
+    border-radius: 6px;
+    margin: 0 10px;
+    border: 1px solid #046cf5;
+}
+
+@media(max-width:640px) {
+    .main-outer .admin-outer .product-navbar .Product_btn {
+        width: auto;
+        font-size: 10px;
+    }
+    .main-outer .admin-outer .product-navbar{
+        justify-content: center;
+    }
+}
+
+/* Department table */
+.ant-table-cell {
+    padding: 4px !important;
+}
