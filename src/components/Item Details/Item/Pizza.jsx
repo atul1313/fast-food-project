@@ -62,6 +62,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
     // Set defaults
     useEffect(() => {
         if (sizedata.length > 0 && !size) {
+            console.log(sizedata)
             setSize(sizedata[0]);
         }
         // if (createyourown.length > 0 && !size) {
