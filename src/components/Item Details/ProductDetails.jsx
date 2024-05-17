@@ -32,7 +32,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
     if (pdetail.isPizza === 1) {
         if (location.pathname === "/CREATE%20YOUR%20OWN/9") {
             var totalPrice = myFinalPrise < 6 ? size?.[`toppingPrice${myFinalPrise}`] : size?.toppingPrice5 + crust.modifierCost;
-
+            console.log(totalPrice)
             if (myFinalPrise >= 5) {
 
                 totalPrice += checkboxItem1.length < 6 ?
@@ -106,7 +106,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
 
     useEffect(() => {
         if (location.pathname === "/CREATE%20YOUR%20OWN/9" && createyourown) {
-            setSize(createyourown[0])
+            // setSize(createyourown[0])
         }
     }, [() =>handeAddtoCart()])
 
