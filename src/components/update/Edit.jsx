@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
-import NoImage from '../../assets/images/NoImage.png'
+import React, { useContext, useEffect, useState } from 'react';
+import NoImage from '../../assets/images/NoImage.png';
 import Loading from '../loading/Loading';
 import EditItem from './EditItem';
-import { Modal } from 'antd'
+import { Modal } from 'antd';
 import EditCustomize from './EditCustomize';
 import { userContext } from '../../context/Usercontext';
 import axios from 'axios';
@@ -13,22 +13,26 @@ function Edit({ editData, setEdit, index }) {
     const { checkboxItem1, setCheckboxItem1, current, setCurrent, maxLevel, setmaxLevel, qty, size, crust, spice, pizzaName,
         setCartData, cartData, setSelectVariation, setSize, setNote, note, setQty, setSelectedItems,
         setIsLoading, pdetail, selectedModifiers
-    } = useContext(userContext)
+    } = useContext(userContext);
 
     const location = useLocation();
-    const [editCustomize, setEditCustomize] = useState(false)
+    const [editCustomize, setEditCustomize] = useState(false);
     const [databyID, setDatabyID] = useState([]);
     const [editModify, setEditModify] = useState([]);
-    const [myFinalPrise, setMyFinalPrise] = useState('')
+    const [myFinalPrise, setMyFinalPrise] = useState('');
 
     let price;
 
     useEffect(() => {
-        setMyFinalPrise(editData?.selectVariation?.length)
-    }, [selectedModifiers])
+        // Initialize checkboxItem1 with selectVariation from editData
+        if (editData && editData.selectVariation) {
+            setCheckboxItem1(editData.selectVariation);
+        }
+        setMyFinalPrise(editData?.selectVariation?.length);
+    }, [editData, setCheckboxItem1, selectedModifiers]);
 
     if (pdetail.isPizza === 1) {
-        if (location.pathname == "/CREATE%20YOUR%20OWN/9") {
+        if (location.pathname === "/CREATE%20YOUR%20OWN/9") {
             var totalPrice = selectedModifiers ? size.toppingPrice1 : (size.toppingPrice5 + crust.modifierCost);
             if (selectedModifiers) {
                 totalPrice += checkboxItem1.reduce((total, item) => total + item.pizzaModifierPrice, 0);
@@ -42,9 +46,8 @@ function Edit({ editData, setEdit, index }) {
         price = Number(((pdetail.price + checkboxItem1.reduce((total, item) => total + item.price, 0)) * qty).toFixed(2));
     }
 
-
     const handeAddtoCart = () => {
-        setmaxLevel(0)
+        setmaxLevel(0);
         const params = {
             produtDetail: editData.produtDetail,
             qty: qty,
@@ -55,60 +58,54 @@ function Edit({ editData, setEdit, index }) {
             pCrust: crust,
             pizzaName: pizzaName,
             price: price
-        }
+        };
 
+        const updateArray = [...cartData];
+        updateArray[index] = params;
+        setCartData(updateArray);
+        localStorage.setItem('cartData', JSON.stringify(updateArray));
 
-
-        const updateArray = [...cartData]
-        updateArray[index] = params
-        setCartData(updateArray)
-        localStorage.setItem('cartData', JSON.stringify(updateArray))
-
-        setCurrent(0)
-        setSelectVariation(null)
-        setEdit(false)
-        setNote("")
-        setQty(1)
-        setSize(editData.pSize)
-        setSelectedItems([])
-        setCheckboxItem1([])
-    }
+        setCurrent(0);
+        setSelectVariation(null);
+        setEdit(false);
+        setNote("");
+        setQty(1);
+        setSize(editData.pSize);
+        setSelectedItems([]);
+        setCheckboxItem1([]);
+    };
 
     const getTopping = async () => {
         if (pdetail.isCreateYourOwn === 1) {
             try {
                 setIsLoading(true);
                 await axios.get(`${process.env.REACT_APP_URL}/api/PizzaToppingPrice?productId=${pdetail.productId}`);
-            }
-            catch (err) {
+            } catch (err) {
                 console.log(err);
-            }
-            finally {
-                setIsLoading(false)
+            } finally {
+                setIsLoading(false);
             }
         }
-    }
+    };
 
     const getProductItem = async () => {
         try {
-            setIsLoading(true)
-            const responce = await axios.get(`${process.env.REACT_APP_URL}/api/Variation/ByProductId?productId=${pdetail.productId}`);
-            if (responce.status === 200) {
-                setDatabyID(responce.data)
+            setIsLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_URL}/api/Variation/ByProductId?productId=${pdetail.productId}`);
+            if (response.status === 200) {
+                setDatabyID(response.data);
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
-        finally {
-            setIsLoading(false)
-        }
-    }
+    };
 
     useEffect(() => {
         getTopping();
         getProductItem();
-    }, [pdetail.productId])
+    }, [pdetail.productId]);
 
     return (
         <>
@@ -132,8 +129,6 @@ function Edit({ editData, setEdit, index }) {
                 }
             </div>
 
-
-
             {/* PIZZA */}
             {editData.produtDetail.isPizza === 1 ?
                 <Modal open={editCustomize} onCancel={() => setEditCustomize(false)} width={500} height={600}>
@@ -141,7 +136,7 @@ function Edit({ editData, setEdit, index }) {
                 </Modal>
                 : ""}
         </>
-    )
+    );
 }
 
 export default Edit;
