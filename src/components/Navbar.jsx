@@ -4,12 +4,11 @@ import { userContext } from "../context/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login';
 import { Form, Input, Row, Col, Modal, notification } from 'antd';
-import axios from 'axios'
+import axios from 'axios';
 import { Avatar, Box, Chip, IconButton, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import Person2Icon from '@mui/icons-material/Person2';
 import CloseIcon from '@mui/icons-material/Close';
-
 
 function Navbar() {
   const { handleClick, data, fatchData } = useContext(userContext);
@@ -19,26 +18,29 @@ function Navbar() {
   const [isProfileOpen, setProfileOpen] = useState(false);
   const theme = useTheme();
 
-  //profile dropdown
+  // profile dropdown
   const toggleProfile = () => {
     setProfileOpen(!isProfileOpen);
   };
-  //notification
+
+  // notification
   const openNotification = (type, message) => {
     notification[type]({
       message: message,
     });
   };
+
   const Editprofile = () => {
     seteditprofile(true);
   };
+
   const handleOk = () => {
     seteditprofile(false);
   };
+
   const handleCancel = () => {
     seteditprofile(false);
   };
-
 
   const navigation = useNavigate();
   const handleCatagory = (index) => {
@@ -52,8 +54,7 @@ function Navbar() {
 
   useEffect(() => {
     fatchData();
-  }, []);
-
+  }, [fatchData]);
 
   const myRealdata = JSON.parse(localStorage.getItem("loginUser"));
   const mylogindata = localStorage.getItem("login_type");
@@ -63,11 +64,10 @@ function Navbar() {
     localStorage.removeItem("cartData");
     localStorage.removeItem("orderType");
     navigation("/");
-    window.location.reload()
+    window.location.reload();
   };
 
-
-  // Customer edit api
+  // Customer edit API
   const customerDetails = () => {
     const data = localStorage.getItem('loginUser');
     if (data) {
@@ -80,42 +80,50 @@ function Navbar() {
   const Oneditprofile = async (values) => {
     setLoading(true);
     try {
-      const clientId = initialValues.clientId;
-      const url = `${process.env.REACT_APP_URL}/api/Customer/UpdateCustomerData`;
-      const response = await axios.put(url, {
-        clientId,
-        ...values
-      });
-      if (response.status === 200) {
-        openNotification('success', 'Profile updated successfully');
-        const updatedUserData = {
-          ...values,
-          clientId
-        };
-        localStorage.setItem('loginUser', JSON.stringify(updatedUserData));
-        seteditprofile(false);
-      }
+        const clientId = initialValues.clientId;
+        const url = `${process.env.REACT_APP_URL}/api/Customer/UpdateCustomerData`;
+        const response = await axios.put(url, {
+            clientId,
+            ...values,
+        });
+
+        if (response.status === 200) {
+            openNotification('success', 'Profile updated successfully');
+            const updatedUserData = {
+                ...values,
+                clientId,
+            };
+            localStorage.setItem('loginUser', JSON.stringify(updatedUserData));
+            seteditprofile(false);
+        } else {
+            throw new Error(`Unexpected response status: ${response.status}`);
+        }
     } catch (error) {
-      console.error('Error updating profile:', error);
+        console.error('Error updating profile:', error);
+        if (error.response) {
+            // Server responded with a status other than 200 range
+            openNotification('error', `Failed to update profile: ${error.response.status} - ${error.response.data}`);
+        } else if (error.request) {
+            // Request was made but no response received
+            console.error('Request details:', error.request);
+            openNotification('error', 'Failed to update profile: No response from server.');
+        } else {
+            // Something else happened
+            openNotification('error', `Failed to update profile: ${error.message}`);
+        }
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
+
   const anchorRef = useRef(null);
 
-  // useEffect(() => {
-  //   const handleOuterClick = (event) => {
-  //     if (!anchorRef.current.contains(event.target)) {
-  //       setProfileOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener('mousedown', handleOuterClick);
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleOuterClick);
-  //   };
-  // }, []);
+  const readOnlyStyle = {
+    backgroundColor: '#f5f5f5',
+    color: '#000',
+    cursor: 'default',
+  };
 
   return (
     <>
@@ -133,61 +141,66 @@ function Navbar() {
               <>
                 <div>
                   <div className="profile-details relative">
-                    {myRealdata && (<>
-                      <Chip
-                        sx={{
-                          height: '52px',
-                          alignItems: 'center',
-                          borderRadius: '27px',
-                          transition: 'all .2s ease-in-out',
-                          borderColor: theme.palette.primary.light,
-                          backgroundColor: '#5e35b1 !important',
-                          color: "white",
-                          '&[aria-controls="menu-list-grow"], &:hover': {
-                            borderColor: '#5559CE !important',
-                            background: '#5559CE !important',
-                            color: '#ffffff !important',
-                          },
-                          '& .MuiChip-label': {
-                            lineHeight: 0
+                    {myRealdata && (
+                      <>
+                        <Chip
+                          sx={{
+                            height: '52px',
+                            alignItems: 'center',
+                            borderRadius: '27px',
+                            transition: 'all .2s ease-in-out',
+                            borderColor: theme.palette.primary.light,
+                            backgroundColor: '#5e35b1 !important',
+                            color: "white",
+                            '&[aria-controls="menu-list-grow"], &:hover': {
+                              borderColor: '#5559CE !important',
+                              background: '#5559CE !important',
+                              color: '#ffffff !important',
+                            },
+                            '& .MuiChip-label': {
+                              lineHeight: 0,
+                            },
+                          }}
+                          icon={
+                            <Avatar
+                              style={{ width: "38px", height: "38px" }}
+                              src={``}
+                              ref={anchorRef}
+                              aria-haspopup="true"
+                              color="inherit"
+                            >
+                              <Person2Icon />
+                            </Avatar>
                           }
-                        }}
-                        icon={
-                          <Avatar
-                            style={{ width: "38px", height: "38px" }}
-                            src={``}
-                            ref={anchorRef}
-                            aria-haspopup="true"
-                            color="inherit"
-                          >
-                            <Person2Icon />
-                          </Avatar>
-                        }
-                        label={<Box>
-                          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start" }}>
-                            <Typography style={{ fontSize: "15px", fontWeight: 600, color: "white" }}>{mylogindata === "customer"
-                              ? myRealdata.firstName
-                              : myRealdata[0] && myRealdata[0].userName}</Typography>
+                          label={
+                            <Box>
+                              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start" }}>
+                                <Typography style={{ fontSize: "15px", fontWeight: 600, color: "white" }}>
+                                  {mylogindata === "customer"
+                                    ? myRealdata.firstName
+                                    : myRealdata[0] && myRealdata[0].userName}
+                                </Typography>
+                              </div>
+                            </Box>
+                          }
+                          variant="outlined"
+                          ref={anchorRef}
+                          aria-haspopup="true"
+                          onClick={toggleProfile}
+                          color="primary"
+                          className="chip-outer"
+                        />
+                        {isProfileOpen && (
+                          <div className="Profie_change">
+                            <Link to="/myorder">My Orders</Link>
+                            <Link onClick={Editprofile} style={{ cursor: 'pointer' }}>Customer Details</Link>
+                            <Link onClick={userLogout} style={{ cursor: 'pointer' }}>
+                              Logout
+                            </Link>
                           </div>
-                        </Box>}
-                        variant="outlined"
-                        ref={anchorRef}
-                        aria-haspopup="true"
-                        onClick={toggleProfile}
-                        color="primary"
-                        className="chip-outer"
-                      />
-                      {isProfileOpen && (
-                        <div className="Profie_change">
-                          <Link to="/myorder">My Orders</Link>
-                          <Link onClick={Editprofile} style={{ cursor: 'pointer' }}>Customer Details</Link>
-                          {/* <Link to="/changepassword">Change Password</Link> */}
-                          <Link onClick={userLogout} style={{ cursor: 'pointer' }}>
-                            Logout
-                          </Link>
-                        </div>
-                      )}
-                    </>)}
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -225,9 +238,9 @@ function Navbar() {
               </li>
             ))}
           </ul>
-
         </div>
       </div>
+
       {/* Edit Customer Profile */}
       <Modal open={editprofile} onOk={handleOk} onCancel={handleCancel} width={600} maskClosable={false}>
         <IconButton
@@ -243,13 +256,13 @@ function Navbar() {
           <CloseIcon />
         </IconButton>
         <Form
-          style={{ marginTop: "30PX" }}
+          style={{ marginTop: "30px" }}
           name="basic"
           initialValues={initialValues}
           onFinish={Oneditprofile}
         >
-          <Row gutter={[16, 16]}> {/* Adjust gutter size as needed */}
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}> {/* Adjust column sizes as needed */}
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
               <Form.Item
                 name="firstName"
                 rules={[
@@ -259,7 +272,12 @@ function Navbar() {
                   },
                 ]}
               >
-                <Input placeholder="First Name" size="large" />
+                <Input
+                  placeholder="First Name"
+                  size="large"
+                  readOnly
+                  style={readOnlyStyle}
+                />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
@@ -338,8 +356,8 @@ function Navbar() {
           </Row>
           <Col xs={24}>
             <div className="d-flex justify-content-center">
-              <button type="submit" className="order mt-0 mx-2 ">
-                Update
+              <button type="submit" className="order mt-0 mx-2" disabled={loading}>
+                {loading ? 'Updating...' : 'Update'}
               </button>
               <button type="button" className="mt-0 mx-2 cancle-btn" onClick={() => seteditprofile(false)}>
                 Cancel

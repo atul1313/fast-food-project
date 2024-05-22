@@ -14,7 +14,7 @@ import { CircularProgress } from "@mui/material";
 
 function CheckOut({
   totalPrice,
-  gsttotal,
+  gstTotal,
   pltTotal,
   setCheckOut,
   isModalOpen,
@@ -524,7 +524,7 @@ function CheckOut({
                     clientData,
                     data,
                     orderType,
-                    gsttotal,
+                    gstTotal,
                     pltTotal,
                     setCheckOut,
                     setCurrent,
@@ -1077,7 +1077,7 @@ function CheckOut({
                       clientData,
                       data,
                       orderType,
-                      gsttotal,
+                      gstTotal,
                       pltTotal,
                       setCheckOut,
                       setCurrent,

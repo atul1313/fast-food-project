@@ -52,29 +52,24 @@ const Row = ({ row }) => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                        {row.orderDetail.map((entry, index) => (
-                                            <TableRow key={entry._id}>
-                                                <TableCell align="center">
-                                                    {index + 1}
-                                                </TableCell>
-                                                <TableCell
-                                                    align="center"
-                                                >
-                                                    {entry.productCode}
-                                                </TableCell>
-                                                <TableCell
-                                                    align="center"
-                                                >
-                                                    {entry.quantity}
-                                                </TableCell>
-                                                <TableCell
-                                                    align="center"
-                                                >
-                                                    {entry.totalValue}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
+                                    {row.orderDetail && row.orderDetail.map((entry, index) => (
+                                        <TableRow key={entry._id}>
+                                            <TableCell align="center">
+                                                {index + 1}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                {entry.productCode}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                {entry.quantity}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                {entry.totalValue}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+
                             </Table>
                         </Box>
                     </Collapse>
@@ -123,7 +118,7 @@ const MyOrder = () => {
                                 <TableCell align="right">Date</TableCell>
                                 <TableCell align="right">Order Type</TableCell>
                                 <TableCell align="right">Payment method</TableCell>
-                                <TableCell align="right">Order timings</TableCell>	
+                                <TableCell align="right">Order timings</TableCell>
                                 <TableCell align="right">Delivery charges</TableCell>
                                 <TableCell align="right">Discount</TableCell>
                                 <TableCell align="right">Total Amount</TableCell>

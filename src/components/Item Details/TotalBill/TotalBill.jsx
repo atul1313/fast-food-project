@@ -6,15 +6,15 @@ import Clover from './Clover';
 import { Grid, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import Paypal from '../../payment/Paypal';
 
-function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gsttotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
+function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gstTotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
 
     const { cartData, settings, setCartData, setOrderType, setAddVerify, setBillData, setCart } = useContext(userContext)
     const [check, setCheck] = useState(false);
-    const totalAmount = (parseFloat(totalPrice) + parseFloat(tip) + parseFloat(gsttotal) + parseFloat(pltTotal)).toFixed(2);
-    
+    const totalAmount = (parseFloat(totalPrice) + parseFloat(tip) + parseFloat(gstTotal) + parseFloat(pltTotal)).toFixed(2);
 
 
-        
+
+
     const handlePaymentChange = (e) => {
         setPayment(e.target.value);
     };
@@ -139,9 +139,9 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
         orderSubmit(e);
     };
 
-   
 
-  
+
+
 
     return (
         <>
@@ -150,24 +150,26 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
             <div className='total-box'>
                 <div className="item">
                     <div className="title">Subtotal:</div>
-                    <div className="amount">${(totalPrice).toFixed(2)}</div>
+                    <div className="amount">${totalPrice !== undefined ? totalPrice.toFixed(2) : '0.00'}</div>
                 </div>
                 <div className="item">
                     <div className="title">GST:</div>
-                    <div className="amount">${parseFloat(gsttotal).toFixed(2)}</div>
+                    <div className="amount">${!isNaN(gstTotal) ? parseFloat(gstTotal).toFixed(2) : '0.00'}</div>
                 </div>
                 <div className="item">
                     <div className="title">PLT:</div>
-                    <div className="amount">${parseFloat(pltTotal).toFixed(2)}</div>
+                    <div className="amount">${!isNaN(pltTotal) ? parseFloat(pltTotal).toFixed(2) : '0.00'}</div>
                 </div>
                 <div className="item">
                     <div className="title">Tip:</div>
-                    <div className="amount">${tip > 0 ? parseFloat(tip).toFixed(2) : '0.00'}</div>
+                    <div className="amount">${tip !== undefined && tip > 0 ? parseFloat(tip).toFixed(2) : '0.00'}</div>
                 </div>
                 <div className="item">
                     <div className="title">Total:</div>
-                    <div className="amount">${isNaN(totalAmount) ? '0.00' : totalAmount}</div>
+                    {/* <div className="amount">${!isNaN(totalAmount) ? totalAmount.toFixed(2) : '0.00'}</div> */}
+                    <div className="amount">${!isNaN(parseFloat(totalAmount)) ? parseFloat(totalAmount).toFixed(2) : '0.00'}</div>
                 </div>
+
 
                 <div className="tips-outer item">
                     <div className="title">Tips:</div>
