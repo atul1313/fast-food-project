@@ -29,7 +29,7 @@ function Billing() {
                 item.pSize.toppingPrice5
             ];
             const numberOfToppings = item.selectVariation.length;
-            const basePrice = typeof basePriceMapping[0] === 'undefined' || numberOfToppings > 5 ? 13.99 : basePriceMapping[numberOfToppings - 1];
+            const basePrice = numberOfToppings > 5 ? basePriceMapping[4] : basePriceMapping[numberOfToppings - 1];
             const extraToppingsPrice = item.selectVariation.slice(5).reduce((sum, topping) => sum + (Number(topping.pizzaModifierPrice) || 0), 0);
             itemTotal = basePrice + extraToppingsPrice;
         } else {
@@ -109,7 +109,7 @@ function Billing() {
                         </>
                         : null
                     }
-                    {item.produtDetail.isCreateYourOwn === 1 ? `${item.pSize.sizeName} - $${item.pSize.toppingPrice1 ? item.pSize.toppingPrice1 : 13.99}` : null}
+                    {item.produtDetail.isCreateYourOwn === 1 ? `${item.pSize.sizeName} - $${item.pSize.toppingPrice1}` : null}
                     {item.produtDetail && item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ?
                         <>
                             {item.pSize.sizeName} - ${item.pSize.sizePriceX1} <br />
@@ -120,21 +120,14 @@ function Billing() {
                 </div>
                 {item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ? <div>{item.pizzaName.productName}</div> : null}
                 {item.produtDetail.isPizza === 1 && item.produtDetail.productCode !== "CREATE YOUR OWN" ?
-                    item.selectVariation && item.selectVariation.map((res, i) => {
-                        console.log('res', res)
-                        return <div key={i} style={{ padding: "0 10px" }}> * {res.pizzaModifierName} -  ${res.pizzaModifierPrice ? res.pizzaModifierPrice : null}</div>
-                    })
+                    item.selectVariation && item.selectVariation.map((res, i) => (
+                        <div key={i} style={{ padding: "0 10px" }}> * {res.pizzaModifierName} -  ${res.pizzaModifierPrice ? res.pizzaModifierPrice : null}</div>
+                    ))
                     :
                     item.selectVariation && item.selectVariation.map((res, i) => (
-                        <div key={i} style={{ padding: "0 10px" }}>
-                            {res.name && (res.price !== 0 && res.price !== "" ? `${res.name} [${res.price}]` : res.name)}
-                            {(!res.name && res.pizzaModifierName) &&
-                                `* ${res.pizzaModifierName} ${res.pizzaModifierPrice === 0 || res.pizzaModifierPrice === "" ? "" : `[$${res.pizzaModifierPrice}]`}`
-                            }
-                        </div>
-
-
-                    ))}
+                        <div key={i} style={{ padding: "0 10px" }}> * {res.pizzaModifierName} {res.pizzaModifierPrice === 0 || res.pizzaModifierPrice === "" ? "" : `[$${res.pizzaModifierPrice}]`} </div>
+                    ))
+                }
                 {item.note !== "" ? <div style={{ fontSize: "13px" }}>**{item.note}</div> : ""}
             </div>
             <div style={{ width: '15%', padding: '10px 0', textAlign: "center" }}>{item.qty}</div>
@@ -147,8 +140,6 @@ function Billing() {
             </div>
         </div>
     ));
-
-
 
     return (
         <>
@@ -210,7 +201,7 @@ function Billing() {
                             <div style={{ width: '35%', overflowX: "hidden" }}>${totalOrderPrice}</div>
                         </div>
                         <div className='btn'>
-                            <button className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }}  onClick={() => setCheckOut(true)}>Place Order</button>
+                            <button className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }} onClick={() => setCheckOut(true)}>Place Order</button>
                         </div>
                     </div>
                 </div>

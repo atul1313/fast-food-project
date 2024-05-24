@@ -8,7 +8,7 @@ import { userContext } from "../context/Usercontext";
 import axios from "axios";
 import TotalBill from "./Item Details/TotalBill/TotalBill";
 import { DatePicker, Space, notification } from "antd";
-import { Input, TimePicker, Form, Tabs} from "antd";
+import { Input, TimePicker, Form, Tabs } from "antd";
 import AutoComplateGoogleMap from "./AutoComplateGoogleMap";
 import { CircularProgress } from "@mui/material";
 
@@ -211,10 +211,10 @@ function CheckOut({
       <Tabs defaultActiveKey="1">
         {/*Guest Checkout && Payment */}
         {isLoggedInMyData ? (
-          <Tabs.TabPane  tab="Checkout" key="3">
+          <Tabs.TabPane tab="Checkout" key="3">
             <h4>Checkout</h4>
             <Steps current={current} items={items} />
-            <div className="order-type">
+            {/* <div className="order-type">
               <h6>Order Type : {orderType}</h6>
               <div className="order-type-inner ">
                 <div className="mx-2">
@@ -242,7 +242,7 @@ function CheckOut({
                   </label>
                 </div>
               </div>
-            </div>
+            </div> */}
             <Form method="GET" onFinish={handleCustomer}>
               {current === 0 ? (
                 orderType === "TakeOut" ? (
@@ -930,15 +930,6 @@ function CheckOut({
                             />
                           </Col>
 
-                          <Col xs={24} sm={12}>
-                            <div className="location">
-                              <AutoComplateGoogleMap
-                                value={selectedAddress}
-                                setAddress={setSelectedAddress}
-                              />
-                            </div>
-                          </Col>
-
                           <Col xs={24} sm={12} className="Register-input">
                             <Form.Item
                               name="phoneNo"
@@ -1043,7 +1034,26 @@ function CheckOut({
                               />
                             </Space>
                           </Col>
+                          <Col xs={24} sm={12}>
+                            <Box
+                              sx={{
+                                "& > :not(style)": { m: "0 0", width: "100%" },
+                              }} >
 
+                            </Box>
+                          </Col>
+                          <Col xs={24} sm={24} className="Register-input">
+                            <Box
+                              sx={{
+                                "& > :not(style)": { m: "30px 0", width: "100%" },
+                              }}
+                            >
+                              <AutoComplateGoogleMap
+                                value={selectedAddress}
+                                setAddress={setSelectedAddress}
+                              />
+                            </Box>
+                          </Col>
                           <Col xs={24} sm={24} className="Register-input">
                             <Box
                               sx={{
@@ -1061,6 +1071,7 @@ function CheckOut({
                               />
                             </Box>
                           </Col>
+                         
                         </Row>
                       </div>
                     </div>

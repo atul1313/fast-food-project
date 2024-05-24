@@ -106,7 +106,9 @@ function Edit({ editData, setEdit, index }) {
         getTopping();
         getProductItem();
     }, [pdetail.productId]);
-
+    console.log(
+        'p==>',pdetail
+    )
     return (
         <>
             <Loading />
@@ -114,6 +116,13 @@ function Edit({ editData, setEdit, index }) {
                 <div className='product-detail-inner'>
                     <div className='about-product'>
                         <h3 className='pname'>{editData.produtDetail.productName}</h3>
+                        {
+                            pdetail.price === "" || pdetail.price === 0 ?
+                                <h6 style={{ fontSize: "13px", marginLeft: '12px' }}></h6>
+                                :
+                                <h6 style={{ fontSize: "13px", marginLeft: '12px' }}>${pdetail.price}</h6>
+                        }
+
                         {editData.produtDetail.pricedesc === "" || editData.produtDetail.pricedesc === "0" ?
                             <h6 className='price'>${editData.produtDetail.price}</h6>
                             : null}
