@@ -214,35 +214,6 @@ function CheckOut({
           <Tabs.TabPane tab="Checkout" key="3">
             <h4>Checkout</h4>
             <Steps current={current} items={items} />
-            {/* <div className="order-type">
-              <h6>Order Type : {orderType}</h6>
-              <div className="order-type-inner ">
-                <div className="mx-2">
-                  <label>
-                    <input
-                      type="radio"
-                      value="TakeOut"
-                      checked={orderType === "TakeOut"}
-                      onChange={handleOrderTypeChange}
-                      disabled={cartData.length === 0}
-                    />
-                    Take Out
-                  </label>
-                </div>
-                <div className="mx-2">
-                  <label>
-                    <input
-                      type="radio"
-                      value="Delivery"
-                      checked={orderType === "Delivery"}
-                      onChange={handleOrderTypeChange}
-                      disabled={cartData.length === 0}
-                    />{" "}
-                    Delivery
-                  </label>
-                </div>
-              </div>
-            </div> */}
             <Form method="GET" onFinish={handleCustomer}>
               {current === 0 ? (
                 orderType === "TakeOut" ? (
@@ -748,37 +719,8 @@ function CheckOut({
             <Tabs.TabPane tab="Guest User" key="3">
               <h5>Guest User</h5>
               <Steps current={current} className="flex" />
-              <div className="order-type d-flex justify-content-between">
-                <div>
-                  <h6>Order Type : {orderType}</h6>
-                </div>
-                <div className="order-type-inner ">
-                  <div className="mx-2">
-                    <label>
-                      <input
-                        type="radio"
-                        value="TakeOut"
-                        checked={orderType === "TakeOut"}
-                        onChange={handleOrderTypeChange}
-                        disabled={cartData.length === 0}
-                      />{" "}
-                      Take Out
-                    </label>
-                  </div>
-                  <div className="mx-2">
-                    <label>
-                      <input
-                        type="radio"
-                        value="Delivery"
-                        checked={orderType === "Delivery"}
-                        onChange={handleOrderTypeChange}
-                        disabled={cartData.length === 0}
-                      />{" "}
-                      Delivery
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <h6>Order Type : {orderType}</h6>
+
               {/* ORDER TYPE */}
               <Form method="GET" onFinish={handleCustomer}>
                 {current === 0 ? (
@@ -1071,7 +1013,7 @@ function CheckOut({
                               />
                             </Box>
                           </Col>
-                         
+
                         </Row>
                       </div>
                     </div>
