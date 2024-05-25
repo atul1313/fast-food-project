@@ -8,7 +8,7 @@ import Paypal from '../../payment/Paypal';
 
 function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gstTotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
 
-    const { cartData, settings, setCartData, setOrderType, setAddVerify, setBillData, setCart, youraddress } = useContext(userContext);
+    const { cartData, settings, setCartData, setOrderType, setAddVerify, setBillData, setCart } = useContext(userContext);
     const [check, setCheck] = useState(false);
     const totalAmount = (parseFloat(totalPrice) + parseFloat(tip) + parseFloat(gstTotal) + parseFloat(pltTotal)).toFixed(2);
     const [selectedAddress, setSelectedAddress] = useState(clientData.address);
@@ -207,7 +207,7 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                     )
                 }
                 {
-                    youraddress && (
+                    clientData && (
                         <Grid item xs={12} sm={12} >
                             <RadioGroup
                                 name="address"
