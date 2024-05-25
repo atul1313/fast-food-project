@@ -8,13 +8,13 @@ import { userContext } from "../context/Usercontext";
 import axios from "axios";
 import TotalBill from "./Item Details/TotalBill/TotalBill";
 import { DatePicker, Space, notification } from "antd";
-import { Input, TimePicker, Form, Tabs} from "antd";
+import { Input, TimePicker, Form, Tabs } from "antd";
 import AutoComplateGoogleMap from "./AutoComplateGoogleMap";
 import { CircularProgress } from "@mui/material";
 
 function CheckOut({
   totalPrice,
-  gsttotal,
+  gstTotal,
   pltTotal,
   setCheckOut,
   isModalOpen,
@@ -211,38 +211,9 @@ function CheckOut({
       <Tabs defaultActiveKey="1">
         {/*Guest Checkout && Payment */}
         {isLoggedInMyData ? (
-          <Tabs.TabPane  tab="Checkout" key="3">
+          <Tabs.TabPane tab="Checkout" key="3">
             <h4>Checkout</h4>
             <Steps current={current} items={items} />
-            <div className="order-type">
-              <h6>Order Type : {orderType}</h6>
-              <div className="order-type-inner ">
-                <div className="mx-2">
-                  <label>
-                    <input
-                      type="radio"
-                      value="TakeOut"
-                      checked={orderType === "TakeOut"}
-                      onChange={handleOrderTypeChange}
-                      disabled={cartData.length === 0}
-                    />
-                    Take Out
-                  </label>
-                </div>
-                <div className="mx-2">
-                  <label>
-                    <input
-                      type="radio"
-                      value="Delivery"
-                      checked={orderType === "Delivery"}
-                      onChange={handleOrderTypeChange}
-                      disabled={cartData.length === 0}
-                    />{" "}
-                    Delivery
-                  </label>
-                </div>
-              </div>
-            </div>
             <Form method="GET" onFinish={handleCustomer}>
               {current === 0 ? (
                 orderType === "TakeOut" ? (
@@ -524,7 +495,7 @@ function CheckOut({
                     clientData,
                     data,
                     orderType,
-                    gsttotal,
+                    gstTotal,
                     pltTotal,
                     setCheckOut,
                     setCurrent,
@@ -748,37 +719,8 @@ function CheckOut({
             <Tabs.TabPane tab="Guest User" key="3">
               <h5>Guest User</h5>
               <Steps current={current} className="flex" />
-              <div className="order-type d-flex justify-content-between">
-                <div>
-                  <h6>Order Type : {orderType}</h6>
-                </div>
-                <div className="order-type-inner ">
-                  <div className="mx-2">
-                    <label>
-                      <input
-                        type="radio"
-                        value="TakeOut"
-                        checked={orderType === "TakeOut"}
-                        onChange={handleOrderTypeChange}
-                        disabled={cartData.length === 0}
-                      />{" "}
-                      Take Out
-                    </label>
-                  </div>
-                  <div className="mx-2">
-                    <label>
-                      <input
-                        type="radio"
-                        value="Delivery"
-                        checked={orderType === "Delivery"}
-                        onChange={handleOrderTypeChange}
-                        disabled={cartData.length === 0}
-                      />{" "}
-                      Delivery
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <h6>Order Type : {orderType}</h6>
+
               {/* ORDER TYPE */}
               <Form method="GET" onFinish={handleCustomer}>
                 {current === 0 ? (
@@ -930,15 +872,6 @@ function CheckOut({
                             />
                           </Col>
 
-                          <Col xs={24} sm={12}>
-                            <div className="location">
-                              <AutoComplateGoogleMap
-                                value={selectedAddress}
-                                setAddress={setSelectedAddress}
-                              />
-                            </div>
-                          </Col>
-
                           <Col xs={24} sm={12} className="Register-input">
                             <Form.Item
                               name="phoneNo"
@@ -1043,7 +976,26 @@ function CheckOut({
                               />
                             </Space>
                           </Col>
+                          <Col xs={24} sm={12}>
+                            <Box
+                              sx={{
+                                "& > :not(style)": { m: "0 0", width: "100%" },
+                              }} >
 
+                            </Box>
+                          </Col>
+                          <Col xs={24} sm={24} className="Register-input">
+                            <Box
+                              sx={{
+                                "& > :not(style)": { m: "30px 0", width: "100%" },
+                              }}
+                            >
+                              <AutoComplateGoogleMap
+                                value={selectedAddress}
+                                setAddress={setSelectedAddress}
+                              />
+                            </Box>
+                          </Col>
                           <Col xs={24} sm={24} className="Register-input">
                             <Box
                               sx={{
@@ -1061,6 +1013,7 @@ function CheckOut({
                               />
                             </Box>
                           </Col>
+
                         </Row>
                       </div>
                     </div>
@@ -1077,7 +1030,7 @@ function CheckOut({
                       clientData,
                       data,
                       orderType,
-                      gsttotal,
+                      gstTotal,
                       pltTotal,
                       setCheckOut,
                       setCurrent,

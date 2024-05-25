@@ -1,73 +1,92 @@
+// Import useEffect and useState hooks
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "../css/navbar.css";
 import { userContext } from "../context/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login';
-import { Form, Input, Row, Col, Modal, notification } from 'antd';
-import axios from 'axios'
+import { Input, Row, Col, Modal, notification } from 'antd';
+import axios from 'axios';
 import { Avatar, Box, Chip, IconButton, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import Person2Icon from '@mui/icons-material/Person2';
 import CloseIcon from '@mui/icons-material/Close';
-
+import AutoCompleteGoogleMap from "./AutoComplateGoogleMap";
 
 function Navbar() {
   const { handleClick, data, fatchData } = useContext(userContext);
-  const [editprofile, seteditprofile] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isProfileOpen, setProfileOpen] = useState(false);
   const theme = useTheme();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    phoneNo: '',
+    email: '',
+    password: '',
+    address: '',
+    address1: ''
+  });
 
-  //profile dropdown
   const toggleProfile = () => {
     setProfileOpen(!isProfileOpen);
   };
-  //notification
+
   const openNotification = (type, message) => {
     notification[type]({
       message: message,
     });
   };
-  const Editprofile = () => {
-    seteditprofile(true);
+
+  const editProfileHandler = () => {
+    setEditProfile(true);
   };
+
   const handleOk = () => {
-    seteditprofile(false);
+    setEditProfile(false);
   };
+
   const handleCancel = () => {
-    seteditprofile(false);
+    setEditProfile(false);
   };
 
-
-  const navigation = useNavigate();
-  const handleCatagory = (index) => {
+  const navigate = useNavigate();
+  const handleCategory = (index) => {
     setSelectedItem(index);
   };
 
   const handleAdminLogin = (loginType) => {
     localStorage.setItem("login_type", loginType);
-    navigation("/login");
+    navigate("/login");
   };
 
   useEffect(() => {
     fatchData();
+  }, [fatchData]);
+
+  // Load address data from local storage on component mount
+  useEffect(() => {
+    const storedAddress = localStorage.getItem("address");
+    if (storedAddress) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        address: storedAddress,
+      }));
+    }
   }, []);
 
-
-  const myRealdata = JSON.parse(localStorage.getItem("loginUser"));
-  const mylogindata = localStorage.getItem("login_type");
+  const myRealData = JSON.parse(localStorage.getItem("loginUser"));
+  const myLoginData = localStorage.getItem("login_type");
 
   const userLogout = () => {
     localStorage.removeItem("loginUser");
     localStorage.removeItem("cartData");
     localStorage.removeItem("orderType");
-    navigation("/");
-    window.location.reload()
+    navigate("/");
+    window.location.reload();
   };
 
-
-  // Customer edit api
   const customerDetails = () => {
     const data = localStorage.getItem('loginUser');
     if (data) {
@@ -77,45 +96,80 @@ function Navbar() {
   };
   const initialValues = customerDetails();
 
-  const Oneditprofile = async (values) => {
+  useEffect(() => {
+    if (initialValues) {
+      setFormData({
+        firstName: initialValues.firstName || '',
+        lastName: initialValues.lastName || '',
+        phoneNo: initialValues.phoneNo || '',
+        email: initialValues.email || '',
+        password: initialValues.password || '',
+        address: initialValues.address || '',
+        address1: initialValues.address1 || ''
+      });
+    }
+  }, []);
+
+  const onEditProfile = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const clientId = initialValues.clientId;
       const url = `${process.env.REACT_APP_URL}/api/Customer/UpdateCustomerData`;
-      const response = await axios.put(url, {
+      const response = await axios.post(url, {
         clientId,
-        ...values
+        ...formData,
       });
+
       if (response.status === 200) {
         openNotification('success', 'Profile updated successfully');
         const updatedUserData = {
-          ...values,
-          clientId
+          ...formData,
+          clientId,
         };
         localStorage.setItem('loginUser', JSON.stringify(updatedUserData));
-        seteditprofile(false);
+        setEditProfile(false);
+      } else {
+        throw new Error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+      if (error.response) {
+        openNotification('error', `Failed to update profile: ${error.response.status} - ${error.response.data}`);
+      } else if (error.request) {
+        openNotification('error', 'Failed to update profile: No response from server.');
+      } else {
+        openNotification('error', `Failed to update profile: ${error.message}`);
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleAddressChange = (address, field) => {
+    setFormData({
+      ...formData,
+      [field]: address.description
+    });
+    // Store address data in local storage
+    localStorage.setItem("address", address.description);
+  };
+
   const anchorRef = useRef(null);
 
-  // useEffect(() => {
-  //   const handleOuterClick = (event) => {
-  //     if (!anchorRef.current.contains(event.target)) {
-  //       setProfileOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener('mousedown', handleOuterClick);
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleOuterClick);
-  //   };
-  // }, []);
+  const readOnlyStyle = {
+    backgroundColor: '#f5f5f5',
+    color: '#000',
+    cursor: 'default',
+  };
 
   return (
     <>
@@ -129,65 +183,70 @@ function Navbar() {
               </button>
             </div>
 
-            {myRealdata ? (
+            {myRealData ? (
               <>
                 <div>
                   <div className="profile-details relative">
-                    {myRealdata && (<>
-                      <Chip
-                        sx={{
-                          height: '52px',
-                          alignItems: 'center',
-                          borderRadius: '27px',
-                          transition: 'all .2s ease-in-out',
-                          borderColor: theme.palette.primary.light,
-                          backgroundColor: '#5e35b1 !important',
-                          color: "white",
-                          '&[aria-controls="menu-list-grow"], &:hover': {
-                            borderColor: '#5559CE !important',
-                            background: '#5559CE !important',
-                            color: '#ffffff !important',
-                          },
-                          '& .MuiChip-label': {
-                            lineHeight: 0
+                    {myRealData && (
+                      <>
+                        <Chip
+                          sx={{
+                            height: '52px',
+                            alignItems: 'center',
+                            borderRadius: '27px',
+                            transition: 'all .2s ease-in-out',
+                            borderColor: theme.palette.primary.light,
+                            backgroundColor: '#5e35b1 !important',
+                            color: "white",
+                            '&[aria-controls="menu-list-grow"], &:hover': {
+                              borderColor: '#5559CE !important',
+                              background: '#5559CE !important',
+                              color: '#ffffff !important',
+                            },
+                            '& .MuiChip-label': {
+                              lineHeight: 0,
+                            },
+                          }}
+                          icon={
+                            <Avatar
+                              style={{ width: "38px", height: "38px" }}
+                              src={``}
+                              ref={anchorRef}
+                              aria-haspopup="true"
+                              color="inherit"
+                            >
+                              <Person2Icon />
+                            </Avatar>
                           }
-                        }}
-                        icon={
-                          <Avatar
-                            style={{ width: "38px", height: "38px" }}
-                            src={``}
-                            ref={anchorRef}
-                            aria-haspopup="true"
-                            color="inherit"
-                          >
-                            <Person2Icon />
-                          </Avatar>
-                        }
-                        label={<Box>
-                          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start" }}>
-                            <Typography style={{ fontSize: "15px", fontWeight: 600, color: "white" }}>{mylogindata === "customer"
-                              ? myRealdata.firstName
-                              : myRealdata[0] && myRealdata[0].userName}</Typography>
+                          label={
+                            <Box>
+                              <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start" }}>
+                                <Typography style={{ fontSize: "15px", fontWeight: 600, color: "white" }}>
+                                  {myLoginData === "customer"
+                                    ? myRealData.firstName
+                                    : myRealData[0] && myRealData[0].userName}
+                                </Typography>
+                              </div>
+                            </Box>
+                          }
+                          variant="outlined"
+                          ref={anchorRef}
+                          aria-haspopup="true"
+                          onClick={toggleProfile}
+                          color="primary"
+                          className="chip-outer"
+                        />
+                        {isProfileOpen && (
+                          <div className="Profie_change">
+                            <Link to="/myorder">My Orders</Link>
+                            <Link onClick={editProfileHandler} style={{ cursor: 'pointer' }}>Customer Details</Link>
+                            <Link onClick={userLogout} style={{ cursor: 'pointer' }}>
+                              Logout
+                            </Link>
                           </div>
-                        </Box>}
-                        variant="outlined"
-                        ref={anchorRef}
-                        aria-haspopup="true"
-                        onClick={toggleProfile}
-                        color="primary"
-                        className="chip-outer"
-                      />
-                      {isProfileOpen && (
-                        <div className="Profie_change">
-                          <Link to="/myorder">My Orders</Link>
-                          <Link onClick={Editprofile} style={{ cursor: 'pointer' }}>Customer Details</Link>
-                          {/* <Link to="/changepassword">Change Password</Link> */}
-                          <Link onClick={userLogout} style={{ cursor: 'pointer' }}>
-                            Logout
-                          </Link>
-                        </div>
-                      )}
-                    </>)}
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -217,22 +276,22 @@ function Navbar() {
                       }
                       : {}
                   }
-                  className="catagory-name"
-                  onClick={() => handleCatagory(categoryDescription, index)}
+                  className="category-name"
+                  onClick={() => handleCategory(index)}
                 >
                   {categoryDescription}
                 </Link>
               </li>
             ))}
           </ul>
-
         </div>
       </div>
+
       {/* Edit Customer Profile */}
-      <Modal open={editprofile} onOk={handleOk} onCancel={handleCancel} width={600} maskClosable={false}>
+      <Modal open={editProfile} onOk={handleOk} onCancel={handleCancel} width={600} maskClosable={false}>
         <IconButton
           aria-label="close"
-          onClick={() => seteditprofile(false)}
+          onClick={() => setEditProfile(false)}
           sx={{
             position: 'absolute',
             right: 8,
@@ -242,112 +301,115 @@ function Navbar() {
         >
           <CloseIcon />
         </IconButton>
-        <Form
-          style={{ marginTop: "30PX" }}
-          name="basic"
-          initialValues={initialValues}
-          onFinish={Oneditprofile}
+        <form
+          style={{ marginTop: "30px" }}
+          onSubmit={onEditProfile}
         >
-          <Row gutter={[16, 16]}> {/* Adjust gutter size as needed */}
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}> {/* Adjust column sizes as needed */}
-              <Form.Item
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <Input
                 name="firstName"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your first name!',
-                  },
-                ]}
-              >
-                <Input placeholder="First Name" size="large" />
-              </Form.Item>
+                placeholder='Please enter your first name!'
+                size="large"
+                value={formData.firstName}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+              />
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <Form.Item
+              <Input
                 name="lastName"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your last name!',
-                  },
-                ]}
-              >
-                <Input placeholder="Last Name" size="large" />
-              </Form.Item>
+                placeholder='Please enter your last name!'
+                size="large"
+                value={formData.lastName}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+
+              />
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <Form.Item
+              <Input
                 name="phoneNo"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your phone number!',
-                  },
-                ]}
-              >
-                <Input placeholder="Phone Number" size="large" />
-              </Form.Item>
+                placeholder='Please enter your phone number!'
+                size="large"
+                value={formData.phoneNo}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+
+              />
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <Form.Item
+              <Input
                 name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your email!',
-                  },
-                  {
-                    type: 'email',
-                    message: 'Please enter a valid email!',
-                  },
-                ]}
-              >
-                <Input placeholder="Email" size="large" />
-              </Form.Item>
+                placeholder='Please enter your email!'
+                size="large"
+                value={formData.email}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+
+              />
             </Col>
-          </Row>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <Input
                 name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your password!',
-                  },
-                ]}
-              >
-                <Input.Password placeholder="Password" size="large" />
-              </Form.Item>
+                placeholder='Please enter your password!'
+                size="large"
+                value={formData.password}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+              />
             </Col>
-          </Row>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-              <Form.Item
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <Input
                 name="address"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your address!',
-                  },
-                ]}
-              >
-                <Input.TextArea placeholder="Enter your address" size="large" />
-              </Form.Item>
+                placeholder='Please enter your addess'
+                size="large"
+                value={formData.address}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+
+              />
+            </Col>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <Input
+                name="address1"
+                placeholder='Please enter your another addess'
+                size="large"
+                value={formData.address1}
+                readOnly
+                style={readOnlyStyle}
+                onChange={handleInputChange}
+
+              />
+            </Col>
+
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <h5>add address - 1</h5>
+              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address')} />
+            </Col>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <h5>add address - 2</h5>
+              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address1')} />
             </Col>
           </Row>
           <Col xs={24}>
             <div className="d-flex justify-content-center">
-              <button type="submit" className="order mt-0 mx-2 ">
-                Update
+              <button type="submit" className="order mt-0 mx-2" disabled={loading}>
+                {loading ? 'Updating...' : 'Update'}
               </button>
-              <button type="button" className="mt-0 mx-2 cancle-btn" onClick={() => seteditprofile(false)}>
+              <button type="button" className="mt-0 mx-2 cancle-btn" onClick={() => setEditProfile(false)}>
                 Cancel
               </button>
             </div>
           </Col>
-        </Form>
-      </Modal>
+        </form>
+      </Modal >
     </>
   );
 }

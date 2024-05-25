@@ -1,20 +1,22 @@
-import React, { useContext, useState } from 'react'
-import '../../../css/checkout.css'
+import React, { useContext, useState } from 'react';
+import '../../../css/checkout.css';
 import { userContext } from '../../../context/Usercontext';
 import axios from 'axios';
 import Clover from './Clover';
 import { Grid, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 import Paypal from '../../payment/Paypal';
 
-function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gsttotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
+function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gstTotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
 
-    const { cartData, settings, setCartData, setOrderType, setAddVerify, setBillData, setCart } = useContext(userContext)
+    const { cartData, settings, setCartData, setOrderType, setAddVerify, setBillData, setCart } = useContext(userContext);
     const [check, setCheck] = useState(false);
-    const totalAmount = (parseFloat(totalPrice) + parseFloat(tip) + parseFloat(gsttotal) + parseFloat(pltTotal)).toFixed(2);
-    
+    const totalAmount = (parseFloat(totalPrice) + parseFloat(tip) + parseFloat(gstTotal) + parseFloat(pltTotal)).toFixed(2);
+    const [selectedAddress, setSelectedAddress] = useState(clientData.address);
 
+    const handleAddressChange = (event) => {
+        setSelectedAddress(event.target.value);
+    };
 
-        
     const handlePaymentChange = (e) => {
         setPayment(e.target.value);
     };
@@ -94,14 +96,14 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
             "lastName": data.lastname,
             "phoneNo": data.phone,
             "email": data.email,
-            "address": clientData.address,
+            "address": selectedAddress,
             "orderDesc": data.firstName,
             "date": data.date,
             "time": data.time,
             "orderType": orderType,
             "onDate": data.date,
-            "onTime": data.time
-        }
+            "onTime": data.time,
+        };
         axios.post(`${process.env.REACT_APP_URL}/api/OrderSubmition`, params)
             .then((response) => {
                 if (response.status === 200) {
@@ -113,118 +115,123 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                     setOrderType("");
                     setData(reqObj);
                     setIsModalOpen(true);
-                    setCart(false)
-                    localStorage.removeItem('cartData')
-                    localStorage.removeItem('orderType')
+                    setCart(false);
+                    localStorage.removeItem('cartData');
+                    localStorage.removeItem('orderType');
                     setTimeout(() => {
                         setIsModalOpen(false);
                     }, 5000);
-
                 }
             })
             .catch((error) => {
                 console.log("Error submitting", error);
-            })
-    }
+            });
+    };
 
     const [showRadioOptions, setShowRadioOptions] = useState(false);
-
 
     const handleshowClick = () => {
         setCheck(true);
         setShowRadioOptions(true);
     };
+
     const handleButtonClick = (e) => {
         setPayment(e.target.value);
         orderSubmit(e);
     };
 
-   
-
-  
 
     return (
-        <>
-
-
-            <div className='total-box'>
-                <div className="item">
-                    <div className="title">Subtotal:</div>
-                    <div className="amount">${(totalPrice).toFixed(2)}</div>
-                </div>
-                <div className="item">
-                    <div className="title">GST:</div>
-                    <div className="amount">${parseFloat(gsttotal).toFixed(2)}</div>
-                </div>
-                <div className="item">
-                    <div className="title">PLT:</div>
-                    <div className="amount">${parseFloat(pltTotal).toFixed(2)}</div>
-                </div>
-                <div className="item">
-                    <div className="title">Tip:</div>
-                    <div className="amount">${tip > 0 ? parseFloat(tip).toFixed(2) : '0.00'}</div>
-                </div>
-                <div className="item">
-                    <div className="title">Total:</div>
-                    <div className="amount">${isNaN(totalAmount) ? '0.00' : totalAmount}</div>
-                </div>
-
-                <div className="tips-outer item">
-                    <div className="title">Tips:</div>
-                    <div className='tips'>
-                        <button value="10" onClick={handlePercentageButtonClick}>10%</button>
-                        <button value="15" onClick={handlePercentageButtonClick}>15%</button>
-                        <button value="20" onClick={handlePercentageButtonClick}>20%</button>
-                        <input
-                            className='text-start'
-                            placeholder='Enter Your Tip'
-                            type="number"
-                            value={tip}
-                            onChange={handleInputChange}
-                            style={{ width: '200px' }}
-                        />
-                    </div>
-                </div>
-                <Grid container spacing={2} alignItems={'center'}>
-                    <Grid item xs={12} sm={12}>
-                        <div className='payment'>
-                            <form onSubmit={orderSubmit}>
-                                <button type="submit" onClick={handleButtonClick}>PAY AT COUNTER</button>
-                            </form>
-                            <button value="payNow" onClick={handleshowClick}>PAY NOW</button>
-                        </div>
-                    </Grid>
-                    {
-                        showRadioOptions && (
-                            <Grid item xs={12} sm={12}>
-                                <RadioGroup
-                                    name="payment"
-                                    value={payment}
-                                    onChange={handlePaymentChange}
-                                    sx={{ flexDirection: 'row', justifyContent: 'center' }}
-                                >
-                                    <FormControlLabel value="paypal" checked={payment === 'paypal'}
-                                        name="payment" control={<Radio />} label="Paypal" />
-                                    <FormControlLabel value="clover" checked={payment === 'clover'}
-                                        name="payment" control={<Radio />} label="Clover" />
-                                </RadioGroup>
-                            </Grid>
-                        )
-                    }
-
-
-                    <Grid item xs={12}>
-                        {check && payment === 'paypal' && settings.PaypalPickup === "0" && settings.PaypalDelivery === "1" && (
-                            <Paypal totalAmount={totalAmount} />
-                        )}
-                        {check && payment === 'clover' && settings.CloverDelivery === "0" && settings.CloverPickup === "1" && (
-                            <Clover totalAmount={totalAmount} setCheckOut={setCheckOut} />
-                        )}
-                    </Grid>
-                </Grid>
+        <div className='total-box'>
+            <div className="item">
+                <div className="title">Subtotal:</div>
+                <div className="amount">${totalPrice !== undefined ? totalPrice.toFixed(2) : '0.00'}</div>
             </div>
-        </>
-    )
+            <div className="item">
+                <div className="title">GST:</div>
+                <div className="amount">${!isNaN(gstTotal) ? parseFloat(gstTotal).toFixed(2) : '0.00'}</div>
+            </div>
+            <div className="item">
+                <div className="title">PLT:</div>
+                <div className="amount">${!isNaN(pltTotal) ? parseFloat(pltTotal).toFixed(2) : '0.00'}</div>
+            </div>
+            <div className="item">
+                <div className="title">Tip:</div>
+                <div className="amount">${tip !== undefined && tip > 0 ? parseFloat(tip).toFixed(2) : '0.00'}</div>
+            </div>
+            <div className="item">
+                <div className="title">Total:</div>
+                <div className="amount">${!isNaN(parseFloat(totalAmount)) ? parseFloat(totalAmount).toFixed(2) : '0.00'}</div>
+            </div>
+
+            <div className="tips-outer item">
+                <div className="title">Tips:</div>
+                <div className='tips'>
+                    <button value="10" onClick={handlePercentageButtonClick}>10%</button>
+                    <button value="15" onClick={handlePercentageButtonClick}>15%</button>
+                    <button value="20" onClick={handlePercentageButtonClick}>20%</button>
+                    <input
+                        className='text-start'
+                        placeholder='Enter Your Tip'
+                        type="number"
+                        value={tip}
+                        onChange={handleInputChange}
+                        style={{ width: '200px' }}
+                    />
+                </div>
+            </div>
+            <Grid container spacing={2} alignItems={'center'}>
+                <Grid item xs={12} sm={12}>
+                    <div className='payment'>
+                        <form onSubmit={orderSubmit}>
+                            <button type="submit" onClick={handleButtonClick}>PAY AT COUNTER</button>
+                        </form>
+                        <button value="payNow" onClick={handleshowClick}>PAY NOW</button>
+                    </div>
+                </Grid>
+                {
+                    showRadioOptions && (
+                        <Grid item xs={12} sm={12}>
+                            <RadioGroup
+                                name="payment"
+                                value={payment}
+                                onChange={handlePaymentChange}
+                                sx={{ flexDirection: 'row', justifyContent: 'center' }}
+                            >
+                                <FormControlLabel value="paypal" checked={payment === 'paypal'}
+                                    name="payment" control={<Radio />} label="Paypal" />
+                                <FormControlLabel value="clover" checked={payment === 'clover'}
+                                    name="payment" control={<Radio />} label="Clover" />
+                            </RadioGroup>
+                        </Grid>
+                    )
+                }
+                {
+                    clientData && (
+                        <Grid item xs={12} sm={12} >
+                            <RadioGroup
+                                name="address"
+                                value={selectedAddress}
+                                onChange={handleAddressChange}
+                                sx={{ flexDirection: 'row', justifyContent: 'center' }}
+                            >
+                                <FormControlLabel value={clientData.address} checked={selectedAddress === clientData.address} control={<Radio />} label={clientData.address} />
+                                <FormControlLabel value={clientData.address1} checked={selectedAddress === clientData.address1} control={<Radio />} label={clientData.address1} />
+                            </RadioGroup>
+                        </Grid>
+                    )
+                }
+                <Grid item xs={12}>
+                    {check && payment === 'paypal' && settings.PaypalPickup === "0" && settings.PaypalDelivery === "1" && (
+                        <Paypal totalAmount={totalAmount} />
+                    )}
+                    {check && payment === 'clover' && settings.CloverDelivery === "0" && settings.CloverPickup === "1" && (
+                        <Clover totalAmount={totalAmount} setCheckOut={setCheckOut} />
+                    )}
+                </Grid>
+            </Grid>
+        </div>
+    );
 }
 
 export default TotalBill;
