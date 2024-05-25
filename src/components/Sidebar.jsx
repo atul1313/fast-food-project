@@ -3,6 +3,7 @@ import '../css/sidebar.css'
 import { Link } from 'react-router-dom';
 
 import { userContext } from '../context/Usercontext';
+import Skeleton from 'react-loading-skeleton';
 
 
 function Sidebar() {
@@ -15,7 +16,7 @@ function Sidebar() {
   }
 
   useEffect(() => {
-    fatchData();
+      fatchData();
   }, [])
 
   return (
@@ -26,7 +27,7 @@ function Sidebar() {
             data.map(({ categoryDescription, id }, index) => (
               <li className='link' key={id}>
                 <Link
-                 to={"/" + categoryDescription.replace("/", " ") + "/" + id}
+                  to={"/" + categoryDescription.replace("/", " ") + "/" + id}
                   style={selectedItem === index ?
                     {
                       background: "#ede7f6",
@@ -36,7 +37,7 @@ function Sidebar() {
                   className='catagory-name'
                   onClick={() => handleCatagory(categoryDescription, index)}
                 >
-                  {categoryDescription}
+                  {categoryDescription || <Skeleton highlightColor='#000' baseColor='#000'/>}
                 </Link>
               </li>
             ))

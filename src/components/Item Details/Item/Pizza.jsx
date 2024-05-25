@@ -115,7 +115,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                     {pdetail.isPizza === 1 && pdetail.isDeal === 1 && pdetail.isCreateYourOwn === 0 &&
                         <>
                             <h6>Select Pizza Item</h6>
-                            <select onChange={(e) => handlePizzaChange(pizzacalzone[e.target.value])}  value={pizzaName}>
+                            <select onChange={(e) => handlePizzaChange(pizzacalzone[e.target.value])}>
                                 {pizzacalzone.map((item, index) => (
                                     <option key={index} value={index}>
                                         {item.productName}
@@ -129,7 +129,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                 {pdetail.isCreateYourOwn === 1 ?
                     <div className='selection-inner'>
                         <h6>Size</h6>
-                        <select onChange={(e) => handleCreateOwnChange(createyourown[e.target.value])} value={size}>
+                        <select onChange={(e) => handleCreateOwnChange(createyourown[e.target.value])}>
                             {Array.isArray(createyourown) && createyourown.map((item, index) => (
                                 <option key={index} value={index}>
                                     {item.sizeName} [${item.toppingPrice1}]
@@ -140,7 +140,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                     :
                     <div className='selection-inner'>
                         <h5 >Sizes</h5>
-                        <select onChange={(e) => handleSizeChange(sizedata[e.target.value])} value={size}>
+                        <select onChange={(e) => handleSizeChange(sizedata[e.target.value])}>
                             {sizedata.map((item, index) => (
                                 <option key={index} value={index}>
                                     {item.sizeName} [${item.sizePriceX1}]
@@ -154,7 +154,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                     {(pdetail.isPizza === 1 && pdetail.isCreateYourOwn === 0) && (pdetail.isDeal === 0) &&
                         <>
                             <h6>Crust</h6>
-                            <select onChange={(e) => handleCrustChange(crustData[e.target.value])} value={crust}>
+                            <select onChange={(e) => handleCrustChange(crustData[e.target.value])}>
                                 {crustData.map((item, index) => (
                                     <option key={index} value={index}>
                                         {item.modifierName} (${item.modifierCost})
@@ -166,7 +166,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                     {(pdetail.isPizza === 1 && pdetail.isCreateYourOwn === 1) && (pdetail.isDeal === 0) &&
                         <>
                             <h6>Crust</h6>
-                            <select onChange={(e) => handleCrustChange(crustData[e.target.value])} value={spice}>
+                            <select onChange={(e) => handleCrustChange(crustData[e.target.value])}>
                                 {crustData.map((item, index) => (
                                     <option key={index} value={index}>
                                         {item.modifierName} (${item.modifierCost})
@@ -178,7 +178,7 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
                     {pdetail.isPizza === 1 && pdetail.isDeal === 1 &&
                         <>
                             <h6>Spice Level</h6>
-                            <select onChange={(e) => handleSpiceChange(spiceData[e.target.value])} value={spiceData} >
+                            <select onChange={(e) => handleSpiceChange(spiceData[e.target.value])}>
                                 {spiceData.map((item, index) => (
                                     <option key={index} value={index}>
                                         {item}

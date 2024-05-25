@@ -210,7 +210,7 @@ function Billing() {
                             <div style={{ width: '35%', overflowX: "hidden" }}>${totalOrderPrice}</div>
                         </div>
                         <div className='btn'>
-                            <button className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }}  onClick={() => setCheckOut(true)}>Place Order</button>
+                            <button  disabled={cartData.length === 0 || (isLoggedInMyData && !orderType)} className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }}  onClick={() => setCheckOut(true)}>Place Order</button>
                         </div>
                     </div>
                 </div>

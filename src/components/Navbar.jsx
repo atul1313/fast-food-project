@@ -389,17 +389,15 @@ function Navbar() {
               />
             </Col>
 
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <h5>add address - 1</h5>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px] ">
               <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address')} />
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <h5>add address - 2</h5>
               <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address1')} />
             </Col>
           </Row>
           <Col xs={24}>
-            <div className="d-flex justify-content-center">
+            <div className="d-flex mt-5 justify-content-center">
               <button type="submit" className="order mt-0 mx-2" disabled={loading}>
                 {loading ? 'Updating...' : 'Update'}
               </button>

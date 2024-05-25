@@ -7,6 +7,8 @@ import { Modal } from 'antd';
 import ProductDetails from './Item Details/ProductDetails';
 import axios from 'axios';
 import { userContext } from '../context/Usercontext';
+import Skeleton from 'react-loading-skeleton'
+import CardSkeleton from './cardSkeleton';
 
 function Items() {
   const { orderType, setOrderType, companynData, pdetail, setPdetail,
@@ -26,7 +28,9 @@ function Items() {
       setIsLoading(true);
       const responce = await axios.get(`${process.env.REACT_APP_URL}/api/Product/ByCategoryId?categoryId=${id || 7}`);
       if (responce.status === 200) {
-        setData(responce.data)
+        setTimeout(()=>{
+          setData(responce.data)
+        },5000 )
         if (categoryDescription === "PIZZA") {
           setPizzacalzone(responce.data)
         }
@@ -88,39 +92,49 @@ function Items() {
         <h2 className='category-name'>
           <span key="categoryDescription">{categoryDescription}</span>
         </h2>
-
         <div className='row'>
           {
-            data.map((item, index) => (
-              <div className='col-xl-6 col-lg-6 col-md-6 col-sm-12 com-xs-12 prod-item' key={item.productId}>
-                <div className="product-inner">
-                  <div className='item' onClick={() => handeSelecttype(item, index)}>
-                    <div className='about-item' style={{ padding: "10px 0" }}>
-                      <div className="name">
-                        <h5 style={{ fontSize: "16px" }}>{item.productName}</h5>
-                        <h6 style={{ fontSize: "12px" }}>{item.productDescription}</h6>
+            data.length > 0 ? (
+              data.map((item, index) => (
+                <div className='col-xl-6 col-lg-6 col-md-6 col-sm-12 com-xs-12 prod-item' key={item.productId}>
+                  <div className="product-inner">
+                    <div className='item' onClick={() => handeSelecttype(item, index)}>
+                      <div className='about-item' style={{ padding: "10px 0" }}>
+                        <div className="name">
+                          <h5 style={{ fontSize: "16px" }}>{item.productName || <Skeleton circle={true} baseColor='#000' />}</h5>
+                          <h6 style={{ fontSize: "12px" }}>{item.productDescription}</h6>
+                        </div>
+                        {
+                          item.pricedesc === "" || item.pricedesc === "0" ?
+                            <h6 style={{ fontSize: "13px" }}>{item.price}</h6>
+                            :
+                            <h6 style={{ fontSize: "13px" }}>{item.pricedesc}</h6>
+                        }
                       </div>
-                      {
-                        item.pricedesc === "" || item.pricedesc === "0" ?
-                          <h6 style={{ fontSize: "13px" }}>{item.price}</h6>
-                          :
-                          <h6 style={{ fontSize: "13px" }}>{item.pricedesc}</h6>
-                      }
+                      <div className='image'>
+                        <img src={item.image || noImage} alt={item.productName || "No image available"} />
+                      </div>
                     </div>
-                    <div className='image'>
-                      <img src={noImage} alt="" />
+                    <div className='verify' key={`verify-${item.productId}`}>
+                      {cartData.find(cartItem => cartItem.produtDetail.productId === item.productId) ? (<img src={verify} alt="Verified" />) : ""}
                     </div>
-                  </div>
-                  <div className='verify' key={`verify-${item.productId}`}>
-                    {cartData.find(cartItem => cartItem.produtDetail.productId === item.productId) ? (<img src={verify} alt="" />) : ""}
                   </div>
                 </div>
-              </div>
-            ))
+              ))
+            ) : (
+                <>
+                  <div className='col-xl-6 col-lg-6 col-md-6 col-sm-12 com-xs-12'>
+                    <CardSkeleton cards={8} />
+                  </div>
+                  <div className='col-xl-6 col-lg-6 col-md-6 col-sm-12 com-xs-12'>
+                    <CardSkeleton cards={8} />
+                  </div>
+                </>
+            )
           }
-
         </div>
       </div>
+
 
 
       {/* SERVICE MODAL */}
