@@ -31,7 +31,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
     }, [selectedModifiers])
 
     const totalPrice = useMemo(() => {
-        var totalPrice1 = 0;
+        let totalPrice1 = 0;
         if (pdetail.isPizza === 1) {
             if (location.pathname === "/CREATE%20YOUR%20OWN/9") {
                 console.log('myFinalPrise',myFinalPrise)
@@ -41,7 +41,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
                     totalPrice1 += checkboxItem1.length < 6 ? 0 : checkboxItem1.slice(4).reduce((total, item) => total + item.pizzaModifierPrice, 0);
                     appdata(totalPrice1);
                 }
-                return Number((totalPrice1 * qty).toFixed(2));
+                return Number((totalPrice1 * qty).toFixed(2));  
             } else {
                 return Number(((size.sizePriceX1 + crust.modifierCost + checkboxItem1.reduce((total, item) => total + item.pizzaModifierPrice, 0)) * qty).toFixed(2));
             }
@@ -51,7 +51,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
     }, [pdetail.isPizza, location.pathname,myFinalPrise, size, crust, checkboxItem1, qty, appdata]);
 
     useEffect(() => {
-        console.log(totalPrice);
+        console.log('total-pricepdetails',totalPrice);
     }, [totalPrice]);
 
     const getTopping = async () => {
@@ -79,7 +79,7 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
             spice: spice,
             pCrust: crust,
             pizzaName: pizzaName,
-            price: price
+            price: totalPrice
         }
         const newArray = [...cartData, params]
         localStorage.setItem('cartData', JSON.stringify(newArray))
@@ -131,7 +131,8 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
     useEffect(() => {
         getProductItem();
         getTopping();
-    }, [pdetail.productId, current])
+        {console.log('pdetail ===> ', pdetail.price)}
+    }, [pdetail.productId, current,pdetail.price])
 
 
 
@@ -141,7 +142,6 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
                 <div className='product-detail-inner'>
                     <div className='about-product'>
                         <h3 className='pname'>{pdetail.productName}</h3>
-                        {console.log('pdetail ===> ', pdetail.price)}
                         {
                             pdetail.price === "" || pdetail.price === 0 ?
                                 <h6 style={{ fontSize: "13px", marginLeft: '12px' }}></h6>

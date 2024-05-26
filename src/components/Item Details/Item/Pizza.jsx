@@ -8,7 +8,6 @@ function Pizza({ spice, setSpice, setPizzaName, pizzacalzone, pdetail, note, set
     const spiceData = ["Hot", "Extra Hot", "Mild", "Med"];
     const { sizedata, setSizeData, createyourown, setcreateourown, crustData, setCrustData, selectedModifiers } = useContext(userContext);
     const location = useLocation();
-
     // GET PIZZA SIZE
     useEffect(() => {
         const apiendpoint = `${process.env.REACT_APP_URL}/api/PizzaSize/ByProductId?productId=36`

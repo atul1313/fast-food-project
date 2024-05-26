@@ -106,9 +106,10 @@ function Edit({ editData, setEdit, index }) {
         getTopping();
         getProductItem();
     }, [pdetail.productId]);
-    console.log(
-        'p==>',pdetail
-    )
+
+    useEffect(() => {
+        console.log('p==>', pdetail)
+    }, [pdetail ])
     return (
         <>
             <Loading />

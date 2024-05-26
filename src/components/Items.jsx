@@ -28,9 +28,7 @@ function Items() {
       setIsLoading(true);
       const responce = await axios.get(`${process.env.REACT_APP_URL}/api/Product/ByCategoryId?categoryId=${id || 7}`);
       if (responce.status === 200) {
-        setTimeout(()=>{
           setData(responce.data)
-        },5000 )
         if (categoryDescription === "PIZZA") {
           setPizzacalzone(responce.data)
         }

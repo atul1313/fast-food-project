@@ -13,35 +13,61 @@ function Billing() {
     const [checkout, setCheckOut] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [index, setIndex] = useState(null);
+    const [totalPrice, setTotalprice] = useState(0);
 
     const gstRate = 0.05; // Assuming 5% GST, adjust as needed
     const pltRate = 0.10; // Assuming 10% PLT, adjust as needed
 
-    const calculateProductPrice = (item) => {
-        let itemTotal = Number(item.price) || 0;
 
-        if (item.produtDetail && item.produtDetail.productCode === "CREATE YOUR OWN") {
-            const basePriceMapping = [
-                item.pSize.toppingPrice1,
-                item.pSize.toppingPrice2,
-                item.pSize.toppingPrice3,
-                item.pSize.toppingPrice4,
-                item.pSize.toppingPrice5
-            ];
-            const numberOfToppings = item.selectVariation.length;
-            const basePrice = typeof basePriceMapping[0] === 'undefined' || numberOfToppings > 5 ? 13.99 : basePriceMapping[numberOfToppings - 1];
-            const extraToppingsPrice = item.selectVariation.slice(5).reduce((sum, topping) => sum + (Number(topping.pizzaModifierPrice) || 0), 0);
-            itemTotal = basePrice + extraToppingsPrice;
-        } else {
-            if (Array.isArray(item.variationsPrice)) {
-                itemTotal += item.variationsPrice.reduce((sum, price) => sum + Number(price), 0);
+    const calculateProductPrice = (item) => {
+
+        var itemTotal = Number(item.price) || 0;
+        console.log('itemTotal billing ======> ', itemTotal)
+        if (item.produtDetail && item.produtDetail.isPizza === 1) {
+            if (item.produtDetail && item.produtDetail.productCode === "CREATE YOUR OWN") {
+                // const basePriceMapping = [
+                //     item.pSize.toppingPrice1,
+                //     item.pSize.toppingPrice2,
+                //     item.pSize.toppingPrice3,
+                //     item.pSize.toppingPrice4,
+                //     item.pSize.toppingPrice5
+                // ];
+                // const numberOfToppings = item.selectVariation.length;
+                // const basePrice = typeof basePriceMapping[0] === 'undefined' || numberOfToppings > 4 ? 13.99 : basePriceMapping[numberOfToppings - 1];
+                // // numberOfToppings > 5 ? basePriceMapping[4] : basePriceMapping[numberOfToppings - 1];
+                // const extraToppingsPrice = item.selectVariation.slice(5).reduce((sum, topping) => sum + (Number(topping.pizzaModifierPrice) || 0), 0);
+                // itemTotal = basePrice + extraToppingsPrice;
+                // console.log('itemtotslcreateyourown',itemTotal)
+            }
+            else {
+                return itemTotal;
             }
         }
-
-        return itemTotal * Number(item.qty);
+        else {
+            // console.log('Array.isArray(item.variationsPrice)', Array.isArray(item.selectVariation), '\n item.variation => ', item.selectVariation)
+            if (Array.isArray(item.selectVariation)) {
+                return itemTotal;
+            }
+        } 
+        console.log(itemTotal,'itemtotal    ')
+        return itemTotal;
     };
 
-    const totalPrice = cartData.reduce((total, item) => total + calculateProductPrice(item), 0);
+    useEffect(() => {
+        const datatotalprice = cartData.reduce((total, item) => total + calculateProductPrice(item), 0);
+        console.log('calculateProductPrice', datatotalprice)
+        setTotalprice(datatotalprice);
+        console.log('cartData', cartData);
+    }, [cartData]);
+
+    useEffect(() => {
+        console.log('total-pricebilling', totalPrice);
+    }, [totalPrice]);
+
+    // const ssss = cartData.reduce((total, item) => {
+    //     // console.log(total, item)
+    //     return (total + calculateProductPrice(item), 0);
+    // })
     const gstTotal = totalPrice * gstRate;
     const pltTotal = totalPrice * pltRate;
     const totalOrderPrice = (totalPrice + gstTotal + pltTotal).toFixed(2);
@@ -96,57 +122,59 @@ function Billing() {
         window.location.reload();
     }
 
-    const productItems = cartData.map((item, index) => (
-        <div className='products' key={index}>
-            <div style={{ width: '57%', fontSize: "13px", padding: '10px 0' }}>
-                <div style={{ fontSize: "13px", fontWeight: "500" }}>
-                    {index + 1}. {item.produtDetail && item.produtDetail.productName}
-                    <br />
-                    {item.produtDetail && item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 0 ?
-                        <>
-                            {item.pSize.sizeName} <br />
-                            {item.pCrust.modifierName}
-                        </>
-                        : null
-                    }
-                    {item.produtDetail.isCreateYourOwn === 1 ? `${item.pSize.sizeName} - $${item.pSize.toppingPrice1 ? item.pSize.toppingPrice1 : 13.99}` : null}
-                    {item.produtDetail && item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ?
-                        <>
-                            {item.pSize.sizeName} - ${item.pSize.sizePriceX1} <br />
-                            {item.spice}
-                        </>
-                        : null
-                    }
+    const productItems = cartData.map((item, index) => {
+        // console.log('prodcutitem=>', item)
+        return (
+            <div className='products' key={index}>
+                <div style={{ width: '57%', fontSize: "13px", padding: '10px 0' }}>
+                    <div style={{ fontSize: "13px", fontWeight: "500" }}>
+                        {index + 1}. {item.produtDetail && item.produtDetail.productName}
+                        <br />
+                        {item.produtDetail && item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 0 && item.produtDetail.isCreateYourOwn === 0 ?
+                            <>
+                                {item.pSize.sizeName} - ${item.pSize.sizePriceX1} <br />
+                                {item.pCrust.modifierName}
+                            </>
+                            : null
+                        }
+                        {item.produtDetail.isCreateYourOwn === 1 ? `${item.pSize.sizeName} - $${item.pSize.toppingPrice1 ? item.pSize.toppingPrice1 : 13.99}` : null}
+                        {item.produtDetail && item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ?
+                            <>
+                                {item.pSize.sizeName} - ${item.pSize.sizePriceX1} < br />
+                                {item.spice}
+                            </>
+                            : null
+                        }
+                    </div>
+                    {item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ? <div>{item.pizzaName.productName}</div> : null}
+                    {item.produtDetail.isPizza === 1 && item.produtDetail.productCode !== "CREATE YOUR OWN" ?
+                        item.selectVariation && item.selectVariation.map((res, i) => {
+                            return <div key={i} style={{ padding: "0 10px" }}> * {res.pizzaModifierName} -  ${res.pizzaModifierPrice ? res.pizzaModifierPrice : null}</div>
+                        })
+                        :
+                        item.selectVariation && item.selectVariation.map((res, i) => (
+                            <div key={i} style={{ padding: "0 10px" }}>
+                                {res.name && (res.price !== 0 && res.price !== "" ? `${res.name} [${res.price}]` : res.name)}
+                                {(!res.name && res.pizzaModifierName) &&
+                                    `* ${res.pizzaModifierName} ${res.pizzaModifierPrice === 0 || res.pizzaModifierPrice === "" ? "" : `[$${res.pizzaModifierPrice}]`}`
+                                }
+                            </div>
+
+
+                        ))}
+                    {item.note !== "" ? <div style={{ fontSize: "13px" }}>**{item.note}</div> : ""}
                 </div>
-                {item.produtDetail.isPizza === 1 && item.produtDetail.isDeal === 1 ? <div>{item.pizzaName.productName}</div> : null}
-                {item.produtDetail.isPizza === 1 && item.produtDetail.productCode !== "CREATE YOUR OWN" ?
-                    item.selectVariation && item.selectVariation.map((res, i) => {
-                        console.log('res', res)
-                        return <div key={i} style={{ padding: "0 10px" }}> * {res.pizzaModifierName} -  ${res.pizzaModifierPrice ? res.pizzaModifierPrice : null}</div>
-                    })
-                    :
-                    item.selectVariation && item.selectVariation.map((res, i) => (
-                        <div key={i} style={{ padding: "0 10px" }}>
-                            {res.name && (res.price !== 0 && res.price !== "" ? `${res.name} [${res.price}]` : res.name)}
-                            {(!res.name && res.pizzaModifierName) &&
-                                `* ${res.pizzaModifierName} ${res.pizzaModifierPrice === 0 || res.pizzaModifierPrice === "" ? "" : `[$${res.pizzaModifierPrice}]`}`
-                            }
-                        </div>
-
-
-                    ))}
-                {item.note !== "" ? <div style={{ fontSize: "13px" }}>**{item.note}</div> : ""}
+                <div style={{ width: '15%', padding: '10px 0', textAlign: "center" }}>{item.qty}</div>
+                <div style={{ width: '18%', padding: '10px 0', textAlign: "center" }}>
+                    ${(calculateProductPrice(item)).toFixed(2)}
+                </div>
+                <div style={{ width: '10%' }}>
+                    <button style={{ background: "#fff" }} onClick={() => handleDelete(index)}><i className="fa-solid fa-trash"></i></button>
+                    <button style={{ background: "#fff" }} onClick={() => handleUpdate(item, index)}><i className="fa-regular fa-pen-to-square"></i></button>
+                </div>
             </div>
-            <div style={{ width: '15%', padding: '10px 0', textAlign: "center" }}>{item.qty}</div>
-            <div style={{ width: '18%', padding: '10px 0', textAlign: "center" }}>
-                ${(calculateProductPrice(item)).toFixed(2)}
-            </div>
-            <div style={{ width: '10%' }}>
-                <button style={{ background: "#fff" }} onClick={() => handleDelete(index)}><i className="fa-solid fa-trash"></i></button>
-                <button style={{ background: "#fff" }} onClick={() => handleUpdate(item, index)}><i className="fa-regular fa-pen-to-square"></i></button>
-            </div>
-        </div>
-    ));
+        )
+    });
 
 
 
@@ -210,7 +238,7 @@ function Billing() {
                             <div style={{ width: '35%', overflowX: "hidden" }}>${totalOrderPrice}</div>
                         </div>
                         <div className='btn'>
-                            <button  disabled={cartData.length === 0 || (isLoggedInMyData && !orderType)} className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }}  onClick={() => setCheckOut(true)}>Place Order</button>
+                            <button disabled={cartData.length === 0 || (isLoggedInMyData && !orderType)} className="checkout" style={{ backgroundColor: '#5e35b1', margin: '0 10px', width: '120px', padding: '8px', borderRadius: 6, border: 'none', color: '#fff' }} onClick={() => setCheckOut(true)}>Place Order</button>
                         </div>
                     </div>
                 </div>
