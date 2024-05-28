@@ -14,7 +14,7 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
     const [selectedAddress, setSelectedAddress] = useState(clientData.address);
 
 
-    console.log(clientData)
+    // console.log(clientData)
     const handleAddressChange = (event) => {
         console.log(event)
         setSelectedAddress(event.target.value);

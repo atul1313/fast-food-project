@@ -46,16 +46,6 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
     );
 
     const GOOGLE_MAPS_API_KEY = "AIzaSyBVNKPywiKIxMm9pXEu9MI6_FYThIyUpbg";
-    const customerDetails = () => {
-        const data = localStorage.getItem('loginUser');
-        if (data) {
-            return JSON.parse(data);
-        }
-        return {};
-    };
-    const initialValues = customerDetails();
-
-    console.log(initialValues)
 
     useEffect(() => {
         let active = true;
@@ -149,7 +139,7 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
                 autoComplete
                 includeInputInList
                 filterSelectedOptions
-                value={formData.address1}
+                value={formData}
                 onChange={handleAddressChange}
                 onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
                 isOptionEqualToValue={(option, value) =>

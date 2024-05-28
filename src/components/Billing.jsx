@@ -23,7 +23,7 @@ function Billing() {
     const calculateProductPrice = (item) => {
 
         var itemTotal = Number(item.price) || 0;
-        console.log('itemTotal billing ======> ', itemTotal)
+        // console.log('itemTotal billing ======> ', itemTotal)
         if (item.produtDetail && item.produtDetail.isPizza === 1) {
             if (item.produtDetail && item.produtDetail.productCode === "CREATE YOUR OWN") {
                 // const basePriceMapping = [
@@ -56,14 +56,11 @@ function Billing() {
 
     useEffect(() => {
         const datatotalprice = cartData.reduce((total, item) => total + calculateProductPrice(item), 0);
-        console.log('calculateProductPrice', datatotalprice)
+        // console.log('calculateProductPrice', datatotalprice)
         setTotalprice(datatotalprice);
-        console.log('cartData', cartData);
+        // console.log('cartData', cartData);
     }, [cartData]);
 
-    useEffect(() => {
-        console.log('total-pricebilling', totalPrice);
-    }, [totalPrice]);
 
     // const ssss = cartData.reduce((total, item) => {
     //     // console.log(total, item)

@@ -410,7 +410,7 @@ function Navbar() {
             <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px]">
               <AutoCompleteGoogleMap
                 setAddress={(address) => handleAddressChange(address, 'address')}
-                formData={formData}
+                formData={formData.address}
               />
             </Col>
           </Row>
@@ -418,7 +418,7 @@ function Navbar() {
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
               <AutoCompleeGoogleMAp
                 setAddress={(address) => handleAddressChange(address, 'address1')}
-                formData={formData}
+                formData={formData.address1}
               />
             </Col>
 

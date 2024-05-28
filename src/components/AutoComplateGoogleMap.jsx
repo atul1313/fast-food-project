@@ -25,18 +25,15 @@ function loadScript(src, position, id) {
 
 const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
 
+    console.log('formdata',formData)
+
     const [inputValue, setInputValue] = useState("");
-    const [valueaddress, setValueadress] = useState("");
     const [options, setOptions] = useState([]);
     const [error, setError] = useState(false); // State to manage error
     const [submissionError, setSubmissionError] = useState(false); // State to manage submission error
     const loaded = useRef(false);
-    // const {  } = useContext(userContext);
     const autocompleteService = useRef(null);
 
-    useEffect(() => {
-        console.log('valueaddress', formData)
-    }, [valueaddress])
     const fetch = useMemo(
         () =>
             throttle((request, callback) => {
@@ -46,16 +43,6 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
     );
 
     const GOOGLE_MAPS_API_KEY = "AIzaSyBVNKPywiKIxMm9pXEu9MI6_FYThIyUpbg";
-    const customerDetails = () => {
-        const data = localStorage.getItem('loginUser');
-        if (data) {
-            return JSON.parse(data);
-        }
-        return {};
-    };
-    const initialValues = customerDetails();
-
-    console.log(initialValues)
 
     useEffect(() => {
         let active = true;
@@ -104,7 +91,6 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
         }
         setError(false);
         if (setAddress) {
-            setValueadress(newAddress)
             setAddress(newAddress);
         }
     };
@@ -150,7 +136,7 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
                 includeInputInList
                 filterSelectedOptions
                 onChange={handleAddressChange}
-                value={formData.address}
+                value={formData}
                 onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
                 isOptionEqualToValue={(option, value) =>
                     option.description === value.description
@@ -164,7 +150,6 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
                         color="secondary"
                         focused
                         size="small"
-                        value={formData.address}
                         error={error || submissionError}
                         helperText={(error || submissionError) && "Address cannot be empty"}
                     />
