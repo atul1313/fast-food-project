@@ -5,7 +5,7 @@ import { Modal } from 'antd';
 import CheckOut from './CheckOut';
 import Edit from './update/Edit';
 import Success from './success/Success';
-import { IconButton } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 function Billing() {
@@ -49,8 +49,8 @@ function Billing() {
             if (Array.isArray(item.selectVariation)) {
                 return itemTotal;
             }
-        } 
-        console.log(itemTotal,'itemtotal    ')
+        }
+        console.log(itemTotal, 'itemtotal    ')
         return itemTotal;
     };
 
@@ -245,23 +245,61 @@ function Billing() {
                 </div>
             </div>
 
-            <Modal className='user-detail' open={checkout} onCancel={() => setCheckOut(false)} width={600} height={500} maskClosable={false}>
+            <Modal className='user-detail order-css' open={checkout} onCancel={() => setCheckOut(false)} width={600} height={600} maskClosable={false}>
                 <IconButton
                     aria-label="close"
                     onClick={() => setCheckOut(false)}
                     sx={{
                         position: 'absolute',
-                        right: 8,
-                        width: '30px',
-                        height: '30px',
-                        top: 8,
-                        color: 'grey',
-                        cursor: 'pointer'
+                        height: '40px',
+                        width: '40px',
+                        backgroundColor: 'white',
+                        color: 'black',
+                        right: '-10px',
+                        top: '-10px',
+                        margin: '0',
+                        padding: 0,
+                        border: '1px solid grey',
+                        borderRadius: '50%',
+                        color: (theme) => theme.palette.grey[500],
                     }}
                 >
                     <CloseIcon />
                 </IconButton>
-                <div className='Checkout'>
+                <Stack
+                    sx={{
+                        display: 'flex',
+                        background: '#5e35b1',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '20px 20px 35px 20px',
+                        borderRadius: '5px',
+                        marginBottom: '30px',
+                        textAlign: 'center',
+                        justifyContent: 'space-between',
+                        borderBottom: '1px solid rgb(206, 210, 217)',
+                        ' @media(max-width:479px)': {
+                            padding: '20px 0px 20px 0px',
+                            alignItems: 'flex-end',
+                            flexDirection: 'column',
+                            rowGap: '20px',
+                        },
+                    }}
+                    direction="row">
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            textAlign: 'center',
+                            fontFamily: 'var(--theme-font-family)',
+                            color: 'white',
+                            whiteSpace: 'nowrap',
+                            '@media(max-width:479px)': { fontSize: '24px', textAlign: 'left' },
+                        }}>
+                        Checkout
+                    </Typography>
+                </Stack>
+
+                <div className='Checkout' style={{paddingRight:'20px',paddingLeft:'20px'}}>
                     <CheckOut {...{ totalPrice, gstTotal, pltTotal, setCheckOut, isModalOpen, setIsModalOpen }} />
                 </div>
             </Modal>

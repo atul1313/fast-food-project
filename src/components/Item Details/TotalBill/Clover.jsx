@@ -5,7 +5,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function Clover({ totalAmount ,setCheckOut}) {
+function Clover({ totalAmount, setCheckOut }) {
 
   const [success, setSuccess] = useState(false);
 
@@ -49,7 +49,7 @@ function Clover({ totalAmount ,setCheckOut}) {
         setCheckOut(false);
         localStorage.removeItem("cartData");
         localStorage.removeItem('orderType')
-        window.location='/'
+        window.location = '/'
       })
       .catch((error) => {
         console.error("Error:", error);

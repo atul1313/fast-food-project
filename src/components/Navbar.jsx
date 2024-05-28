@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles';
 import Person2Icon from '@mui/icons-material/Person2';
 import CloseIcon from '@mui/icons-material/Close';
 import AutoCompleteGoogleMap from "./AutoComplateGoogleMap";
+import AutoCompleeGoogleMAp from './AutoCompleeGoogleMAp';
 
 function Navbar() {
   const { handleClick, data, fatchData } = useContext(userContext);
@@ -294,25 +295,25 @@ function Navbar() {
           onClick={() => setEditProfile(false)}
           sx={{
             position: 'absolute',
-            height:'40px',
-            width:'40px',
-            backgroundColor:'White',
-            color:'black',
+            height: '40px',
+            width: '40px',
+            backgroundColor: 'White',
+            color: 'black',
             right: '-10px',
             top: '-10px',
             margin: '0',
-            padding:0,
-            border:'1px solid grey',
-            borderRadius:'50%',
+            padding: 0,
+            border: '1px solid grey',
+            borderRadius: '50%',
             color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
         </IconButton>
         <form
-        className="formNavbar"
+          className="formNavbar"
           onSubmit={onEditProfile}
-          
+
         >
           <Stack
             sx={{
@@ -323,7 +324,7 @@ function Navbar() {
               padding: '20px 20px 35px 20px',
               borderRadius: '5px',
               marginBottom: '30px',
-              textAlign:'center',
+              textAlign: 'center',
               justifyContent: 'space-between',
               borderBottom: '1px solid rgb(206, 210, 217)',
               ' @media(max-width:479px)': {
@@ -337,16 +338,17 @@ function Navbar() {
             <Typography
               variant="h5"
               sx={{
+                textAlign: 'center',
                 fontFamily: 'var(--theme-font-family)',
                 color: 'white',
                 whiteSpace: 'nowrap',
-                ' @media(max-width:479px)': { fontSize: '24px' },
+                '@media(max-width:479px)': { fontSize: '24px', textAlign: 'left' },
               }}>
               Hey, {formData.firstName}
             </Typography>
 
           </Stack>
-          <Row gutter={[16, 16]} style={{marginLeft:'10px',marginRight:'10px'}}>
+          <Row gutter={[16, 16]} style={{ marginLeft: '10px', marginRight: '10px' }}>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
               <Input
                 name="firstName"
@@ -405,38 +407,24 @@ function Navbar() {
                 onChange={handleInputChange}
               />
             </Col>
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <Input
-                name="address"
-                placeholder='Please enter your addess'
-                size="large"
-                value={formData.address}
-                readOnly
-                style={readOnlyStyle}
-                onChange={handleInputChange}
-
+            <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px]">
+              <AutoCompleteGoogleMap
+                setAddress={(address) => handleAddressChange(address, 'address')}
+                formData={formData}
               />
             </Col>
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <Input
-                name="address1"
-                placeholder='Please enter your another addess'
-                size="large"
-                value={formData.address1}
-                readOnly
-                style={readOnlyStyle}
-                onChange={handleInputChange}
-
-              />
-            </Col>
-
-            {/* <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px] ">
-              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address')}  value={formData.address}/>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address1')}  value={formData.address1} />
-            </Col> */}
           </Row>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
+              <AutoCompleeGoogleMAp
+                setAddress={(address) => handleAddressChange(address, 'address1')}
+                formData={formData}
+              />
+            </Col>
+
+          </Row>
+
+
           <Col xs={24}>
             <div className="d-flex mt-5 justify-content-center">
               <button type="submit" className="order mt-0 mx-2" disabled={loading}>

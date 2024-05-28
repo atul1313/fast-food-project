@@ -149,8 +149,8 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
                 autoComplete
                 includeInputInList
                 filterSelectedOptions
+                value={formData.address1}
                 onChange={handleAddressChange}
-                value={formData.address}
                 onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
                 isOptionEqualToValue={(option, value) =>
                     option.description === value.description
@@ -164,7 +164,6 @@ const AutoComplateGoogleMap = ({ setAddress ,formData}) => {
                         color="secondary"
                         focused
                         size="small"
-                        value={formData.address}
                         error={error || submissionError}
                         helperText={(error || submissionError) && "Address cannot be empty"}
                     />

@@ -212,7 +212,7 @@ function CheckOut({
         {/*Guest Checkout && Payment */}
         {isLoggedInMyData ? (
           <Tabs.TabPane tab="Checkout" key="3">
-            <h4>Checkout</h4>
+            {/* <h4>Checkout</h4>  */}
             <Steps current={current} items={items} />
             <Form method="GET" onFinish={handleCustomer}>
               {current === 0 ? (

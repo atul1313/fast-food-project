@@ -23,16 +23,16 @@ function EditItem({ checkboxItem1, setCheckboxItem1, current, maxLevel, setmaxLe
   const handleBack = () => {
     setCurrent(current - 1);
     if (current > 0) {
-        const prevItem = checkboxItem1[checkboxItem1.length - 2];
-        if (prevItem) {
-            setCheckboxItem1([prevItem]);
-            setSelectVariation(prevItem);
-        } else {
-            setCheckboxItem1([]);
-            setSelectVariation(null);
-        }
+      const prevItem = checkboxItem1[checkboxItem1.length - 2];
+      if (prevItem) {
+        setCheckboxItem1([prevItem]);
+        setSelectVariation(prevItem);
+      } else {
+        setCheckboxItem1([]);
+        setSelectVariation(null);
+      }
     }
-};
+  };
 
   const handleMax = () => {
     setmaxLevel(
@@ -49,10 +49,10 @@ function EditItem({ checkboxItem1, setCheckboxItem1, current, maxLevel, setmaxLe
     const items = databyID.filter((item) => item.level === current);
     if (items.length === 1) {
       setSelectVariation(items[0]);
-      setSelectedCheckbox(items[0]); 
+      setSelectedCheckbox(items[0]);
     } else if (editData.selectVariation) {
       setSelectVariation(editData.selectVariation);
-      setSelectedCheckbox(editData.selectVariation); 
+      setSelectedCheckbox(editData.selectVariation);
     }
   }, [current, databyID, editData]);
 
@@ -99,14 +99,14 @@ function EditItem({ checkboxItem1, setCheckboxItem1, current, maxLevel, setmaxLe
                 .filter((item) => item.level === current + 1)
                 .map((i, index) => (
                   <label key={index} className='item'>
-                     <input
-                                            type="checkbox"
-                                            onChange={() => handleCheckboxItem1(i)}
-                                            checked={
-                                                checkboxItem1.some((item) => item.id === i.id) || selectVariation === i ||
-                                                (current > 0 && checkboxItem1.length === 1 && checkboxItem1[0].id === i.id)
-                                            }
-                                        />
+                    <input
+                      type="checkbox"
+                      onChange={() => handleCheckboxItem1(i)}
+                      checked={
+                        checkboxItem1.some((item) => item.id === i.id) || selectVariation === i ||
+                        (current > 0 && checkboxItem1.length === 1 && checkboxItem1[0].id === i.id)
+                      }
+                    />
                     <span style={{ marginLeft: '20px' }}>
                       {i.name} {i.price === '' || i.price === 0 ? '' : `[$${i.price}]`}
                     </span>

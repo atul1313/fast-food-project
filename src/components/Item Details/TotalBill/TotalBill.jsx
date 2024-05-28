@@ -3,7 +3,7 @@ import '../../../css/checkout.css';
 import { userContext } from '../../../context/Usercontext';
 import axios from 'axios';
 import Clover from './Clover';
-import { Grid, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { Grid, Radio, RadioGroup, FormControlLabel, Button } from '@mui/material';
 import Paypal from '../../payment/Paypal';
 
 function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputChange, setPayment, payment, clientData, data, orderType, gstTotal, pltTotal, setCheckOut, setCurrent, reqObj, setData, setIsModalOpen }) {
@@ -168,20 +168,21 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
             </div>
 
             {
-                    clientData && (
-                        <Grid item xs={6} sm={12}>
-                            <RadioGroup
-                                name="address"
-                                value={selectedAddress}
-                                onChange={handleAddressChange}
-                                sx={{ textAlign: 'start' }}
-                            >
-                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 1:</span> <FormControlLabel value={clientData.address} checked={selectedAddress === clientData.address} control={<Radio />} label={clientData.address} />
-                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 2:</span> <FormControlLabel value={clientData.address1} checked={selectedAddress === clientData.address1} control={<Radio />} label={clientData.address1} />
-                            </RadioGroup>
-                        </Grid>
-                    )
-                }
+                orderType === 'Delivery' && clientData && (
+                    <Grid item xs={6} sm={12} style={{ marginTop: '20px' }}>
+                        <h6>Address:</h6>
+                        <RadioGroup
+                            name="address"
+                            value={selectedAddress}
+                            onChange={handleAddressChange}
+                            sx={{ textAlign: 'start' }}
+                        >
+                            <FormControlLabel value={clientData.address} checked={selectedAddress === clientData.address} control={<Radio />} label={clientData.address} />
+                            <FormControlLabel value={clientData.address1} checked={selectedAddress === clientData.address1} control={<Radio />} label={clientData.address1} />
+                        </RadioGroup>
+                    </Grid >
+                )
+            }
 
             <div className="tips-outer item">
                 <div className="title">Tips:</div>
@@ -199,14 +200,31 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                     />
                 </div>
             </div>
-            <Grid container spacing={2} alignItems={'center'}>
-                <Grid item xs={12} sm={12}>
-                    <div className='payment'>
-                        <form onSubmit={orderSubmit}>
-                            <button type="submit" onClick={handleButtonClick}>PAY AT COUNTER</button>
-                        </form>
-                        <button value="payNow" onClick={handleshowClick}>PAY NOW</button>
-                    </div>
+            <Grid marginTop={4} spacing={1}container alignItems={'center'}>
+                <Grid item xs={12}>
+                    <form onSubmit={orderSubmit}>
+                        <Button
+                            type="submit"
+                            onClick={handleButtonClick}
+                            fullWidth
+                            variant="contained"
+                            
+                            style={{ marginBottom: '8px',padding:'10px',background:'#4e35b1' }} // Add some spacing between buttons
+                        >
+                            PAY AT COUNTER
+                        </Button>
+                    </form>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button
+                        value="payNow"
+                        onClick={handleshowClick}
+                        fullWidth
+                        variant="contained"
+                        style={{background:'#4e35b1',padding:'10px' }}
+                    >
+                        PAY NOW
+                    </Button>
                 </Grid>
                 {
                     showRadioOptions && (
@@ -225,7 +243,7 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                         </Grid>
                     )
                 }
-                
+
                 <Grid item xs={12}>
                     {check && payment === 'paypal' && settings.PaypalPickup === "0" && settings.PaypalDelivery === "1" && (
                         <Paypal totalAmount={totalAmount} />
