@@ -38,14 +38,14 @@
 }
 
 .navbar-outer .nav-inner .cart-btn button {
-	background: #5e35b1;
-	color: #ffff;
-	padding: 8px;
-	width: 50px;
-	border-radius: 6px;
+    background: #5e35b1;
+    color: #ffff;
+    padding: 8px;
+    width: 50px;
+    border-radius: 6px;
 }
 
-.navbar-outer .nav-inner .login_btn  button{
+.navbar-outer .nav-inner .login_btn button {
     margin: 0 10px;
     width: 100px;
     padding: 8px;
@@ -89,6 +89,20 @@
     font-weight: 600;
 }
 
+.NavbarProfile .ant-modal-content {
+    position: relative;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 8px;
+    box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+    pointer-events: auto;
+    padding: 0px 0 20px 0;
+}
+/* .formNavbar .css-dev-only-do-not-override-42nv3w{
+    margin-left: 1px !important;
+    row-gap: none !important;
+} */
 
 .mobile-outer {
     display: none;
@@ -160,10 +174,11 @@
     color: #fff;
     margin: 0 20px;
 }
+
 .bar {
     display: none;
     transition: display 0.05s ease-in-out;
-  }
+}
 
 @media(max-width:991px) {
     .main-outer .admin-outer {
@@ -187,23 +202,27 @@
     }
 }
 
-@media(max-width:479px){
+@media(max-width:479px) {
     .navbar-outer .nav-inner .title {
         font-size: 20px;
     }
-    .navbar-outer .nav-inner .login_btn button{
+
+    .navbar-outer .nav-inner .login_btn button {
         width: 80px;
         margin: 0;
     }
 }
-@media(max-width:320px){
+
+@media(max-width:320px) {
     .navbar-outer .nav-inner .title {
-        font-size:14px;
+        font-size: 14px;
     }
-    .navbar-outer .nav-inner .cart-btn{
+
+    .navbar-outer .nav-inner .cart-btn {
         margin-right: 4px;
     }
 }
+
 ::-webkit-scrollbar {
     width: 1px;
-  }
+}

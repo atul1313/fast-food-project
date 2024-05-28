@@ -167,6 +167,22 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                 <div className="amount">${!isNaN(parseFloat(totalAmount)) ? parseFloat(totalAmount).toFixed(2) : '0.00'}</div>
             </div>
 
+            {
+                    clientData && (
+                        <Grid item xs={6} sm={12}>
+                            <RadioGroup
+                                name="address"
+                                value={selectedAddress}
+                                onChange={handleAddressChange}
+                                sx={{ textAlign: 'start' }}
+                            >
+                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 1:</span> <FormControlLabel value={clientData.address} checked={selectedAddress === clientData.address} control={<Radio />} label={clientData.address} />
+                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 2:</span> <FormControlLabel value={clientData.address1} checked={selectedAddress === clientData.address1} control={<Radio />} label={clientData.address1} />
+                            </RadioGroup>
+                        </Grid>
+                    )
+                }
+
             <div className="tips-outer item">
                 <div className="title">Tips:</div>
                 <div className='tips'>
@@ -209,21 +225,7 @@ function TotalBill({ totalPrice, tip, handlePercentageButtonClick, handleInputCh
                         </Grid>
                     )
                 }
-                {
-                    clientData && (
-                        <Grid item xs={6} sm={12}>
-                            <RadioGroup
-                                name="address"
-                                value={selectedAddress}
-                                onChange={handleAddressChange}
-                                sx={{ textAlign: 'start' }}
-                            >
-                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 1:</span> <FormControlLabel value={clientData.address} checked={selectedAddress === clientData.address} control={<Radio />} label={clientData.address} />
-                                <span style={{ fontWeight: '500', fontSize: '20px' }}>Address 2:</span> <FormControlLabel value={clientData.address1} checked={selectedAddress === clientData.address1} control={<Radio />} label={clientData.address1} />
-                            </RadioGroup>
-                        </Grid>
-                    )
-                }
+                
                 <Grid item xs={12}>
                     {check && payment === 'paypal' && settings.PaypalPickup === "0" && settings.PaypalDelivery === "1" && (
                         <Paypal totalAmount={totalAmount} />

@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login';
 import { Input, Row, Col, Modal, notification } from 'antd';
 import axios from 'axios';
-import { Avatar, Box, Chip, IconButton, Typography } from "@mui/material";
+import { Avatar, Box, Chip, IconButton, Typography, Stack, Button } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import Person2Icon from '@mui/icons-material/Person2';
 import CloseIcon from '@mui/icons-material/Close';
@@ -288,24 +288,65 @@ function Navbar() {
       </div>
 
       {/* Edit Customer Profile */}
-      <Modal open={editProfile} onOk={handleOk} onCancel={handleCancel} width={600} maskClosable={false}>
+      <Modal className="NavbarProfile" open={editProfile} onOk={handleOk} onCancel={handleCancel} width={800} maskClosable={false}>
         <IconButton
           aria-label="close"
           onClick={() => setEditProfile(false)}
           sx={{
             position: 'absolute',
-            right: 8,
-            top: 8,
+            height:'40px',
+            width:'40px',
+            backgroundColor:'White',
+            color:'black',
+            right: '-10px',
+            top: '-10px',
+            margin: '0',
+            padding:0,
+            border:'1px solid grey',
+            borderRadius:'50%',
             color: (theme) => theme.palette.grey[500],
           }}
         >
           <CloseIcon />
         </IconButton>
         <form
-          style={{ marginTop: "30px" }}
+        className="formNavbar"
           onSubmit={onEditProfile}
+          
         >
-          <Row gutter={[16, 16]}>
+          <Stack
+            sx={{
+              display: 'flex',
+              background: '#5e35b1',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '20px 20px 35px 20px',
+              borderRadius: '5px',
+              marginBottom: '30px',
+              textAlign:'center',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid rgb(206, 210, 217)',
+              ' @media(max-width:479px)': {
+                padding: '20px 0px 20px 0px',
+                alignItems: 'flex-end',
+                flexDirection: 'column',
+                rowGap: '20px',
+              },
+            }}
+            direction="row">
+            <Typography
+              variant="h5"
+              sx={{
+                fontFamily: 'var(--theme-font-family)',
+                color: 'white',
+                whiteSpace: 'nowrap',
+                ' @media(max-width:479px)': { fontSize: '24px' },
+              }}>
+              Hey, {formData.firstName}
+            </Typography>
+
+          </Stack>
+          <Row gutter={[16, 16]} style={{marginLeft:'10px',marginRight:'10px'}}>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
               <Input
                 name="firstName"
@@ -389,12 +430,12 @@ function Navbar() {
               />
             </Col>
 
-            <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px] ">
-              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address')} />
+            {/* <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px] ">
+              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address')}  value={formData.address}/>
             </Col>
             <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address1')} />
-            </Col>
+              <AutoCompleteGoogleMap setAddress={(address) => handleAddressChange(address, 'address1')}  value={formData.address1} />
+            </Col> */}
           </Row>
           <Col xs={24}>
             <div className="d-flex mt-5 justify-content-center">

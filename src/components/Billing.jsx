@@ -19,6 +19,7 @@ function Billing() {
     const pltRate = 0.10; // Assuming 10% PLT, adjust as needed
 
 
+
     const calculateProductPrice = (item) => {
 
         var itemTotal = Number(item.price) || 0;
@@ -154,7 +155,7 @@ function Billing() {
                         :
                         item.selectVariation && item.selectVariation.map((res, i) => (
                             <div key={i} style={{ padding: "0 10px" }}>
-                                {res.name && (res.price !== 0 && res.price !== "" ? `${res.name} [${res.price}]` : res.name)}
+                                {res.name && (res.price !== 0 && res.price !== "" ? `${res.name} [$${res.price}]` : res.name)}
                                 {(!res.name && res.pizzaModifierName) &&
                                     `* ${res.pizzaModifierName} ${res.pizzaModifierPrice === 0 || res.pizzaModifierPrice === "" ? "" : `[$${res.pizzaModifierPrice}]`}`
                                 }

@@ -21,8 +21,11 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
 
     const [customize, setCustomize] = useState(false)
     const [databyID, setDatabyID] = useState([]);
-    const [data,appdata] = useState(0);
+    const [data, appdata] = useState(0);
 
+    useEffect(() => {
+        console.log('size === p details =>', size)
+    }, [size])
 
     var price;
 
@@ -34,24 +37,24 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
         let totalPrice1 = 0;
         if (pdetail.isPizza === 1) {
             if (location.pathname === "/CREATE%20YOUR%20OWN/9") {
-                console.log('myFinalPrise',myFinalPrise)
+                console.log('myFinalPrise', myFinalPrise)
                 totalPrice1 = myFinalPrise < 4 ? size?.[`toppingPrice${myFinalPrise}`] : size?.toppingPrice5 + crust.modifierCost;
-                console.log('size',size,totalPrice1,[`toppingPrice${myFinalPrise}`])
+                console.log('size', size, totalPrice1, [`toppingPrice${myFinalPrise}`])
                 if (myFinalPrise >= 5) {
                     totalPrice1 += checkboxItem1.length < 6 ? 0 : checkboxItem1.slice(4).reduce((total, item) => total + item.pizzaModifierPrice, 0);
                     appdata(totalPrice1);
                 }
-                return Number((totalPrice1 * qty).toFixed(2));  
+                return Number((totalPrice1 * qty).toFixed(2));
             } else {
                 return Number(((size.sizePriceX1 + crust.modifierCost + checkboxItem1.reduce((total, item) => total + item.pizzaModifierPrice, 0)) * qty).toFixed(2));
             }
         } else {
             return Number(((pdetail.price + checkboxItem1.reduce((total, item) => total + item.price, 0)) * qty).toFixed(2));
         }
-    }, [pdetail.isPizza, location.pathname,myFinalPrise, size, crust, checkboxItem1, qty, appdata]);
+    }, [pdetail.isPizza, location.pathname, myFinalPrise, size, crust, checkboxItem1, qty, appdata]);
 
     useEffect(() => {
-        console.log('total-pricepdetails',totalPrice);
+        console.log('total-pricepdetails', totalPrice);
     }, [totalPrice]);
 
     const getTopping = async () => {
@@ -131,8 +134,8 @@ function ProductDetails({ pizzacalzone, pdetail, setProductDetails,
     useEffect(() => {
         getProductItem();
         getTopping();
-        {console.log('pdetail ===> ', pdetail.price)}
-    }, [pdetail.productId, current,pdetail.price])
+        { console.log('pdetail ===> ', pdetail.price) }
+    }, [pdetail.productId, current, pdetail.price])
 
 
 
