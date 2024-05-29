@@ -407,22 +407,22 @@ function Navbar() {
                 onChange={handleInputChange}
               />
             </Col>
-            <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0} margin className="mt-[-10px]">
-              <AutoCompleteGoogleMap
-                setAddress={(address) => handleAddressChange(address, 'address')}
-                formData={formData.address}
-              />
-            </Col>
-          </Row>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={12} md={8} lg={12} xl={12}>
-              <AutoCompleeGoogleMAp
-                setAddress={(address) => handleAddressChange(address, 'address1')}
-                formData={formData.address1}
-              />
-            </Col>
 
           </Row>
+          <Col xs={24} style={{marginLeft:'10px', marginRight:'10px'}}>
+            <AutoCompleeGoogleMAp
+              setAddress={(address) => handleAddressChange(address, 'address1')}
+              formData={formData.address1}
+            />
+          </Col>
+          <Col xs={24} style={{marginLeft:'10px', marginRight:'10px'}}>
+            {/* <Col xs={24} sm={12} md={8} lg={12} xl={12} p={0}> */}
+            <AutoCompleteGoogleMap
+              setAddress={(address) => handleAddressChange(address, 'address')}
+              formData={formData.address}
+            />
+          </Col>
+          {/* <Col xs={24}> */}
 
 
           <Col xs={24}>

@@ -47,6 +47,10 @@
     padding: 0px !important;
 }
 
+.user-detail .ant-modal-content {
+	/* height: 700px; */
+	overflow: visible;
+}
 
 
 .table .header-name,

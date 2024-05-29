@@ -15,6 +15,7 @@ function Edit({ editData, setEdit, index }) {
         setIsLoading, pdetail, selectedModifiers
     } = useContext(userContext);
 
+    console.log('sizeedit')
     const location = useLocation();
     const [editCustomize, setEditCustomize] = useState(false);
     const [databyID, setDatabyID] = useState([]);
